@@ -1,0 +1,7 @@
+.page-new-questions
+  = simple_form_for @question do |f|
+    = f.input 'title'
+    = f.input 'content'
+    = f.input 'vote_sum'
+    / = f.association :creator, as: :radio_buttons
+    = f.submit
