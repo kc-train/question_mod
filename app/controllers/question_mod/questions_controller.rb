@@ -1,11 +1,10 @@
 module QuestionMod
   class QuestionsController < QuestionMod::ApplicationController
     def index
-      
+      @questions = QuestionMod::Question.all
     end
 
     def new
-      # current_user = @current_user
       @question = QuestionMod::Question.new
     end
 
@@ -21,7 +20,7 @@ module QuestionMod
 
     private
       def question_params
-        params.require(:question).permit(:title, :content, :vote_sum)
+        params.require(:question).permit(:title, :content, :vote_sum, :creator_id, :answer_ids => [], answers_attributes:[:id, :content])
       end
     
   end

@@ -1,0 +1,17 @@
+.page-questions-index
+  %ul.questions
+    - @questions.each do |question|
+      %ul.question-title
+        = question.title
+      %ul.question-content
+        = question.content
+        %a
+          = link_to '回答', "/answers/new?id=" + "#{question.id}", :method => :get
+      %ul.question-answer
+        - question.answer_ids.each do |t|
+          %ul.answer.content
+            = QuestionMod::Answer.find(t).content
+            %a
+              = link_to '修改', "/answers/#{t}/edit", :method => :get
+  %a.btn
+    = link_to '提问', "/questions/new", :method => :get

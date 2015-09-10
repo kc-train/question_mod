@@ -14,10 +14,10 @@ module QuestionMod
     field :vote_sum, :type => Integer, :default => 0
 
     # creator 不能为空
-    belongs_to :creator,    :class_name => QuestionMod.user_name
+    belongs_to :creator,    :class_name => 'User'
 
     # question 不能为空
-    belongs_to :question,     :class_name => QuestionMod::Question.name
-    has_many   :answer_votes, :class_name => QuestionMod::AnswerVote.name
+    belongs_to :question,     :class_name => 'QuestionMod::Question'
+    has_many   :answer_votes, :class_name => 'QuestionMod::AnswerVote'
   end
 end

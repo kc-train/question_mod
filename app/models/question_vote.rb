@@ -9,7 +9,7 @@ module QuestionMod
     enumerize :kind, in: [:up, :down]
 
     # creator 不能为空
-    belongs_to :creator,  :class_name => QuestionMod.user_name
+    belongs_to :creator,  :class_name => 'User'
 
     # question 不能为空
     belongs_to :question, :class_name => QuestionMod::Question.name
