@@ -1,0 +1,5 @@
+.page-new-answer-votes
+  = simple_form_for @answer_vote do |f|
+    = f.input 'kind'
+    = f.association :answer, as: :hidden
+    = f.submit

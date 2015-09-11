@@ -11,6 +11,6 @@ module QuestionMod
     # creator 不能为空
     belongs_to :creator, :class_name => 'User'
     # answer 不能为空
-    belongs_to :answer, :class_name => QuestionMod::Answer.name
+    belongs_to :answer, :class_name => 'QuestionMod::Answer'
   end
 end

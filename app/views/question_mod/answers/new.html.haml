@@ -1,7 +1,5 @@
 .page-new-answers
   = simple_form_for @answer do |f|
     = f.input 'content'
-    = f.input 'vote_sum', as: :hidden
-    = f.association :creator
-    = f.association :question, :value_mothed => @question    
+    = f.association :question, as: :hidden
     = f.submit

@@ -8,10 +8,10 @@ module QuestionMod
     # up down 二选一
     enumerize :kind, in: [:up, :down]
 
-    # creator 不能为空
+    # # creator 不能为空
     belongs_to :creator,  :class_name => 'User'
-
-    # question 不能为空
-    belongs_to :question, :class_name => QuestionMod::Question.name
+    #
+    # # question 不能为空
+    belongs_to :question, :class_name => 'QuestionMod::Question'
   end
 end

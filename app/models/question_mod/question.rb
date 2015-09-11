@@ -12,10 +12,10 @@ module QuestionMod
     field :vote_sum, :type => Integer, :default => 0
 
     validates :title, :presence => true
-    validates :content, :presence => true 
+    validates :content, :presence => true
     # creator 不能为空
     belongs_to :creator,        :class_name => 'User'
     has_many   :answers,        :class_name => 'QuestionMod::Answer'
-    # has_many   :question_votes, :class_name => QuestionMod::QuestionVote.name
+    has_many   :question_votes, :class_name => 'QuestionMod::QuestionVote'
   end
 end

@@ -1,7 +1,4 @@
 .page-edit-answers
   = simple_form_for @answer do |f|
     = f.input 'content'
-    = f.input 'vote_sum'
-    = f.association :creator, as: :radio_buttons
-    = f.association :question, as: :radio_buttons
     = f.submit

@@ -4,6 +4,7 @@ module QuestionMod
 
     if defined? PlayAuth
       helper PlayAuth::SessionsHelper
+      include PlayAuth::SessionsHelper
     end
   end
 end

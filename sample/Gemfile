@@ -43,3 +43,5 @@ gem 'play_auth', :github => 'mindpin/play_auth',
                  :tag => :latest
 
 gem 'question_mod', path: '../'
+
+gem 'enumerize'
