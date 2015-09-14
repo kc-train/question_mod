@@ -1,7 +1,6 @@
 module QuestionMod
   class QuestionVotesController < QuestionMod::ApplicationController
     def index
-      
     end
 
     def new
@@ -9,8 +8,6 @@ module QuestionMod
     end
 
     def create
-      kind = params[:kind]
-      p kind
       @question_vote = QuestionMod::QuestionVote.new(question_vote_params)
       @question_vote.creator = current_user
       if @question_vote.save
@@ -21,7 +18,9 @@ module QuestionMod
     end
 
     def destroy
-
+      @question_vote = QuestionMod::QuestionVote.where(:question_id => params[:id],:creator => current_user)
+      @question.destroy
+      redirect_to "/questions"
     end
 
     private

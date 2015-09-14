@@ -1,11 +1,8 @@
 module QuestionMod
   class QuestionsController < QuestionMod::ApplicationController
     def index
-      # @agree_vote = @question.question_vote.where(:kind => :up).count
-      # @against_vote = @question.question_vote.where(:kind => :down).count
-      # @vote_sum = @agree_vote - @against_vote
-      # @question = QuestionMod::Question.new(:vote_sum => @vote_sum)
-      @questions = QuestionMod::Question.all
+      @questions = QuestionMod::Question.order(vote_sum: :desc).all
+      # @answers = QuestionMod::Answer.order(vote_sum: :desc).all
     end
 
     def new
