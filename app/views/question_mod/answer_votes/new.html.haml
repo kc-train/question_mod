@@ -1,5 +1,5 @@
 .page-new-answer-votes
   = simple_form_for @answer_vote do |f|
-    = f.input 'kind'
+    = f.input :kind, as: :radio_buttons
     = f.association :answer, as: :hidden
-    = f.submit
+    = f.submit "确定"

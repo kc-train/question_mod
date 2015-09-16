@@ -1,9 +1,9 @@
-.engine-generated
-  .desc 
-    %span rails engine 
-    %strong question_mod 
-    %span 已成功创建
-  .desc 你可以继续进行组件开发了
+/ .engine-generated
+/   .desc 
+/     %span rails engine 
+/     %strong question_mod 
+/     %span 已成功创建
+/   .desc 你可以继续进行组件开发了
 
 .engine-generated
   - if user_signed_in?
@@ -16,13 +16,17 @@
 
   .desc
     %span 访问
-    %a{:href => '/auth'} /auth
+    %a.create-user{:href => '/auth'} /auth
     %span 注册
   .desc
     %span 访问
-    %a{:href => '/auth/login'} /auth/login
+    %a.log-in{:href => '/auth/login'} /auth/login
     %span 登录
   .desc
     %span 点击
-    %a{:href => '/auth/logout', :data => {:method => :delete}} DELETE /auth/logout
+    %a.log-out{:href => '/auth/logout', :data => {:method => :delete}} DELETE /auth/logout
     %span 登出
+  .desc
+    %span 访问
+    %a.to-questions{:href => '/questions'} /questions
+    %span 提问

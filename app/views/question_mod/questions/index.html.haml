@@ -15,14 +15,13 @@
         %a.question-against-vote
           =  "反对"
           = question.question_votes.where(:kind => :down).count
-        %a.cancel_vote
-          / = link_to "取消投票",question.question_votes.where(:creator => current_user) , :method => :delete
+        - if question.question_votes.where(:creator => current_user).count != 0
+          = link_to '修改投票', "/question_votes/#{question.question_votes.where(:creator => current_user).all.first.id}/edit", :method => :get
+          = link_to "取消投票","/question_votes/#{question.question_votes.where(:creator => current_user).all.first.id}", :method => :delete
       %ul.question-title
         = question.title
       %ul.question-content
         = question.content
-      %ul.question-vote-sum
-        - question.update(:vote_sum => question.question_votes.where(:kind => :up).count - question.question_votes.where(:kind => :down).count)
         %a
           - if question.creator != current_user && question.answers.where(:creator => current_user).count == 0
             = link_to '回答', "/answers/new?id=" + "#{question.id}", :method => :get
@@ -30,10 +29,8 @@
         - question.answers.order(vote_sum: :desc).each do |answer|
           %ul.answer.content
             = answer.content
-            - if question.creator != current_user
+            - if answer.creator == current_user
               = link_to '修改', "/answers/#{answer.id}/edit", :method => :get
-          %ul.answer-vote-sum
-            - answer.update(:vote_sum => answer.answer_votes.where(:kind => :up).count - answer.answer_votes.where(:kind => :down).count)
             - if answer.creator != current_user && answer.answer_votes.where(:creator => current_user).count == 0
               = link_to "赞同", "/answer_votes/new?id=" + "#{answer.id}", :method => :get
               = answer.answer_votes.where(:kind => :up).count
@@ -44,5 +41,8 @@
               = answer.answer_votes.where(:kind => :up).count
               = "反对"
               = answer.answer_votes.where(:kind => :down).count
+              - if answer.answer_votes.where(:creator => current_user).count != 0
+                = link_to '修改投票', "/answer_votes/#{answer.answer_votes.where(:creator => current_user).all.first.id}/edit", :method => :get
+                = link_to "取消投票","/answer_votes/#{answer.answer_votes.where(:creator => current_user).all.first.id}", :method => :delete
   %a.btn
     = link_to '提问', "/questions/new", :method => :get

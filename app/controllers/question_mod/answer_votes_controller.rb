@@ -18,8 +18,24 @@ module QuestionMod
       end
     end
 
-    def destroy
+    def edit
+      @answer_vote = QuestionMod::AnswerVote.find(params[:id])
+    end
 
+    def update
+      @answer_vote = QuestionMod::AnswerVote.find(params[:id])
+      @answer_vote.update(answer_vote_params)
+      if @answer_vote.save
+        redirect_to "/questions"
+      else
+        render :edit
+      end
+    end
+
+    def destroy
+      @answer_vote = QuestionMod::AnswerVote.find(params[:id])
+      @answer_vote.destroy
+      redirect_to "/questions"
     end
 
     private

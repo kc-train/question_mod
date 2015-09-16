@@ -17,9 +17,23 @@ module QuestionMod
       end
     end
 
+    def edit
+      @question_vote = QuestionMod::QuestionVote.find(params[:id])
+    end
+
+    def update
+      @question_vote = QuestionMod::QuestionVote.find(params[:id])
+      @question_vote.update(question_vote_params)
+      if @question_vote.save
+        redirect_to "/questions"
+      else
+        render :edit
+      end
+    end
+
     def destroy
-      @question_vote = QuestionMod::QuestionVote.where(:question_id => params[:id],:creator => current_user)
-      @question.destroy
+      @question_vote = QuestionMod::QuestionVote.find(params[:id])
+      @question_vote.destroy
       redirect_to "/questions"
     end
 
