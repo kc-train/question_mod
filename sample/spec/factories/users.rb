@@ -8,4 +8,5 @@ FactoryGirl.define do
     end
     password "1234"
   end
+  
 end

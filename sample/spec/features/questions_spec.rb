@@ -3,36 +3,9 @@ require 'rails_helper'
 RSpec.describe "Questions", type: :feature do
 
   it "测试用户创建问题成功" do
+    @question_title    = "加法"
+    @question_content  = "1 + 1 = ?"
     expect{
-      @user_name1 = "用户1"
-      @email1     = "147258369@qq.com"
-      @password1  = "zjb5363883"
-      @question_title   = "加法"
-      @question_content = "1 + 1 = ?"
-
-      # visit "/"
-      # #点击注册
-      # first("a.create-user").click
-      # #进入注册页面，填入相关信息点击提交
-      # within(".page-container") do
-      #   fill_in "用户名",   :with => @user_name1
-      #   fill_in "Email",    :with => @email1
-      #   fill_in "密码",     :with => @password1
-      #   fill_in "密码验证", :with => @password1
-      # end
-      # click_button '提交'
-      # #注册成功回到首页，点击登录
-      # first("a.log-in").click
-      # #进入登录页面，填入正确的邮箱和密码，点击提交
-      # within(".page-container") do
-      #   fill_in "Email",    :with => @email1
-      #   fill_in "密码",     :with => @password1
-      # end
-      # click_button '提交'
-      # # #回到首页，并显示当前用户
-      # expect(page).to have_css ".desc.current-user"
-      # #点击提问进入问题列表页面
-      # first("a.to-questions").click
       user = create(:user)
       login_in(user)
       visit "/questions"

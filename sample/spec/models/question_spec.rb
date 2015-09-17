@@ -12,7 +12,7 @@ RSpec.describe QuestionMod::Question, type: :model do
 
   it "测试创建问题成功" do
     expect{
-      question = QuestionMod::Question.new(:title => "dg", :content => "dgfg",:creator => @user1)
+      question = FactoryGirl.create(:question, :creator => @user1)
     }.to change{QuestionMod::Question.count}.by(1)
   end
 end

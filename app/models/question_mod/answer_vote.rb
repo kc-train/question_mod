@@ -10,6 +10,8 @@ module QuestionMod
     # up down 二选一
     enumerize :kind, in: [:up, :down]
     validates :creator, :presence => true
+    validates :answer, :presence => true
+
 
     after_create :create_vote
     before_update :update_vote
