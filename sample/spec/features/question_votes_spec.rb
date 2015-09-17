@@ -45,7 +45,7 @@ RSpec.feature "QuestionVotes", type: :feature do
     expect{
       #回到首页
       visit "/"
-      #点击登出确保用户已登出
+      #点击登出确保用户1已登出
       first("a.log-out").click
       #点击注册
       first("a.create-user").click
@@ -57,7 +57,7 @@ RSpec.feature "QuestionVotes", type: :feature do
         fill_in "密码验证", :with => @password2
       end
       click_button '提交'
-      #注册成功回到首页，点击提问进入问题列表页面
+      #注册成功回到首页，当前用户为用户2，点击提问进入问题列表页面
       first("a.to-questions").click
       #点击赞同按钮，投赞同票
       click_link "赞同"

@@ -44,6 +44,7 @@ RSpec.feature "Answers", type: :feature do
     end
     #点击提交后，问题创建成功并回到问题列表页面
     click_button "提交"
+    #用户2登录并回答
     expect{
       #回到首页
       visit "/"

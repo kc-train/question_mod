@@ -13,6 +13,7 @@ module QuestionMod
 
     validates :title, :presence => true
     validates :content, :presence => true
+    validates :creator, :presence => true
     # creator 不能为空
     belongs_to :creator,        :class_name => 'User'
     has_many   :answers,        :class_name => 'QuestionMod::Answer'

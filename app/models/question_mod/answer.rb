@@ -7,6 +7,8 @@ module QuestionMod
     field :content, :type => String
 
     validates :content, :presence => true
+    validates :creator, :presence => true
+    validates :question, :presence => true
 
     # 统计 所有 AnswerVote 的值总和
     # up +1
