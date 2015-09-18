@@ -2,6 +2,7 @@ module QuestionMod
   class Question
     include Mongoid::Document
     include Mongoid::Timestamps
+    include QuestionMod::QuestionVoteableMethod
 
     # title content 不能为空
     field :title,   :type => String

@@ -19,6 +19,10 @@ module QuestionMod
       end
     end
 
+    def method_name
+      
+    end
+
 
     private
       def question_params

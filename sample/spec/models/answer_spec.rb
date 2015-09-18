@@ -15,7 +15,7 @@ RSpec.describe QuestionMod::Answer, type: :model do
 
   it "测试用户2对用户1创建的问题1进行回答成功" do
     expect{
-      answer = FactoryGirl.create(:answer, :creator => @user2, :question => @question1)  
+      answer = QuestionMod::Answer.create(:content => "gg", :creator => @user2, :question => @question1)  
     }.to change{QuestionMod::Answer.count}.by(1)
   end
 
