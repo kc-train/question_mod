@@ -10,4 +10,14 @@
     = javascript_include_tag 'question_mod/application'
 
   %body
-    = yield
+    %nav.navbar.navbar-inverse
+      .container
+        .navbar-header
+          %a.navbar-brand 
+            已登录用户
+            = current_user.name
+        %ul.nav.navbar-nav.navbar-right
+          %li
+            %a{:href => '/auth/logout', :data => {:method => :delete}} 登出
+    .container
+      = yield

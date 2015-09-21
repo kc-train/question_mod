@@ -1,15 +1,16 @@
 module QuestionMod
   class AnswersController < QuestionMod::ApplicationController
+    before_action :find_question
     def index
       
     end
 
     def new
-      @answer = QuestionMod::Answer.new(:question => params[:id])
+      @answer = @question.answers.new
     end
 
     def create
-      @answer = QuestionMod::Answer.new(answer_params)
+      @answer = @question.answers.create(answer_params)
       @answer.creator = current_user
       if @answer.save
         redirect_to "/questions"
@@ -19,11 +20,11 @@ module QuestionMod
     end
 
     def edit
-      @answer = QuestionMod::Answer.find(params[:id])
+      @answer = @question.answers.find(params[:id])
     end
 
     def update
-      @answer = QuestionMod::Answer.find(params[:id])
+      @answer = @question.answers.find(params[:id])
       @answer.update(answer_params)
       if @answer.save
         redirect_to "/questions"
@@ -34,9 +35,13 @@ module QuestionMod
 
 
     private
-      def answer_params
-        params.require(:answer).permit(:content, :question_id)
+      def find_question
+        @question = Question.find(params[:question_id])
+        @question_id = params[:question_id]
       end
-    
+
+      def answer_params
+        params.require(:answer).permit(:content)
+      end
   end
 end

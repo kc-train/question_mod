@@ -73,8 +73,18 @@ RSpec.describe QuestionMod::AnswerVote, type: :model do
     }.to change{@answer1.vote_sum}.by(-1)
   end
 
-  # it "问题的排序是否符合预期" do
-  #   @answers = QuestionMod::Answer.order(vote_sum: :desc).all
-  #   expect(@answers.distinct("content")).to eq(["1", "2", "3", "4", "5"])
-  # end
+  it "问题的排序是否符合预期" do
+    @answer1.vote_by(@user5, QuestionMod::AnswerVote::KIND_UP)
+    @answer2.vote_by(@user5, QuestionMod::AnswerVote::KIND_UP)
+    @answer2.vote_by(@user1, QuestionMod::AnswerVote::KIND_UP)
+    @answer3.vote_by(@user6, QuestionMod::AnswerVote::KIND_DOWN)
+    @answer3.vote_by(@user1, QuestionMod::AnswerVote::KIND_DOWN)
+    @answer4.vote_by(@user1, QuestionMod::AnswerVote::KIND_DOWN)
+    @answers = QuestionMod::Answer.order(vote_sum: :desc).all
+    arr = @answers.map do |answer|
+      answer.content
+    end
+    p arr
+    expect(arr).to eq(["2", "1", "5", "4", "3"])
+  end
 end

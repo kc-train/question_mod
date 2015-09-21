@@ -1,4 +1,4 @@
 .page-edit-answers
-  = simple_form_for @answer do |f|
+  = simple_form_for [@question,@answer] do |f|
     = f.input 'content'
     = f.submit '提交'

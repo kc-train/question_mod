@@ -1,48 +1,49 @@
 .page-questions-index
   %ul.questions
     - @questions.each do |question|
-      - if question.creator != current_user && question.question_votes.where(:creator => current_user).count == 0
-        %a.question-agree-vote
-          = link_to "赞同", "/question_votes/new?id=" + "#{question.id}", :method => :get
-          = question.question_votes.where(:kind => :up).count
-        %a.question-against-vote
-          = link_to "反对", "/question_votes/new?id=" + "#{question.id}", :method => :get
-          = question.question_votes.where(:kind => :down).count
-      - else
-        %a.question-agree-vote
-          =  "赞同"
-          = question.question_votes.where(:kind => :up).count
-        %a.question-against-vote
-          =  "反对"
-          = question.question_votes.where(:kind => :down).count
-        - if question.question_votes.where(:creator => current_user).count != 0
-          = link_to '修改投票', "/question_votes/#{question.question_votes.where(:creator => current_user).all.first.id}/edit", :method => :get
-          = link_to "取消投票","/question_votes/#{question.question_votes.where(:creator => current_user).all.first.id}", :method => :delete
-      %ul.question-title
-        = question.title
-      %ul.question-content
-        = question.content
-        %a
-          - if question.creator != current_user && question.answers.where(:creator => current_user).count == 0
-            = link_to '回答', "/answers/new?id=" + "#{question.id}", :method => :get
-      %ul.question-answer
-        - question.answers.order(vote_sum: :desc).each do |answer|
-          %ul.answer.content
-            = answer.content
-            - if answer.creator == current_user
-              = link_to '修改', "/answers/#{answer.id}/edit", :method => :get
-            - if answer.creator != current_user && answer.answer_votes.where(:creator => current_user).count == 0
-              = link_to "赞同", "/answer_votes/new?id=" + "#{answer.id}", :method => :get
-              = answer.answer_votes.where(:kind => :up).count
-              = link_to "反对", "/answer_votes/new?id=" + "#{answer.id}", :method => :get
-              = answer.answer_votes.where(:kind => :down).count
-            - else
-              = "赞同"
-              = answer.answer_votes.where(:kind => :up).count
-              = "反对"
-              = answer.answer_votes.where(:kind => :down).count
-              - if answer.answer_votes.where(:creator => current_user).count != 0
-                = link_to '修改投票', "/answer_votes/#{answer.answer_votes.where(:creator => current_user).all.first.id}/edit", :method => :get
-                = link_to "取消投票","/answer_votes/#{answer.answer_votes.where(:creator => current_user).all.first.id}", :method => :delete
+      .question-vote
+        - if question.creator != current_user
+          .question-agree-vote
+            %a.glyphicon.glyphicon-menu-up{:href => "questions/#{question.id}/question_votes/agree"}
+            = question.question_votes.where(:kind => :up).count
+          .question-against-vote
+            %a.glyphicon.glyphicon-menu-down{:href => "questions/#{question.id}/question_votes/against"}
+            = question.question_votes.where(:kind => :down).count
+        - else
+          .question-agree-vote
+            %a.glyphicon.glyphicon-menu-up
+            = question.question_votes.where(:kind => :up).count
+          .question-against-vote
+            %a.glyphicon.glyphicon-menu-down
+            = question.question_votes.where(:kind => :down).count
+      .question
+        %ul.question-title
+          = question.title
+        %ul.question-content
+          = question.content
+          %a
+            - if question.creator != current_user && question.answers.where(:creator => current_user).count == 0
+              = link_to '回答', "questions/#{question.id}/answers/new", :method => :get
+          %ul.question-answer
+            - question.answers.order(vote_sum: :desc).each do |answer|
+              - if answer.creator != current_user
+                .answer-agree-vote
+                  %a.glyphicon.glyphicon-menu-up{:href => "questions/#{question.id}/answers/#{answer.id}/answer_votes/agree"}
+                  = answer.answer_votes.where(:kind => :up).count
+                .answer-against-vote
+                  %a.glyphicon.glyphicon-menu-down{:href => "questions/#{question.id}/answers/#{answer.id}/answer_votes/against"}
+                  = answer.answer_votes.where(:kind => :down).count
+              - else
+                .answer-agree-vote
+                  %a.glyphicon.glyphicon-menu-up
+                  = answer.answer_votes.where(:kind => :up).count
+                .answer-against-vote
+                  %a.glyphicon.glyphicon-menu-down
+                  = answer.answer_votes.where(:kind => :down).count
+              %ul.answer.content
+                = answer.content
+                - if answer.creator == current_user
+                  = link_to '修改', "questions/#{question.id}/answers/#{answer.id}/edit", :method => :get
+                
   %a.btn
     = link_to '提问', "/questions/new", :method => :get

@@ -95,7 +95,6 @@ RSpec.describe QuestionMod::QuestionVote, type: :model do
     arr = @questions.map do |question|
       question.title
     end
-    p arr
     expect(arr).to eq(["f2", "3g", "w", "6gf", "4d", "sgf5"])
   end
 end

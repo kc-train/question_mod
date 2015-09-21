@@ -1,45 +1,31 @@
 module QuestionMod
   class QuestionVotesController < QuestionMod::ApplicationController
+    before_action :find_question
     def index
     end
 
-    def new
-      @question_vote = QuestionMod::QuestionVote.new(:question => params[:id])
-    end
-
-    def create
-      @question_vote = QuestionMod::QuestionVote.new(question_vote_params)
-      @question_vote.creator = current_user
-      if @question_vote.save
-        redirect_to "/questions"
+    def agree
+      if @question.vote_state_of(current_user) == QuestionMod::QuestionVote::KIND_UP
+        @question.vote_by(current_user,"")
       else
-        render :new
+        @question.vote_by(current_user,QuestionMod::QuestionVote::KIND_UP)
       end
+      redirect_to "/questions"
     end
 
-    def edit
-      @question_vote = QuestionMod::QuestionVote.find(params[:id])
-    end
-
-    def update
-      @question_vote = QuestionMod::QuestionVote.find(params[:id])
-      @question_vote.update(question_vote_params)
-      if @question_vote.save
-        redirect_to "/questions"
+    def against
+      if @question.vote_state_of(current_user) == QuestionMod::QuestionVote::KIND_DOWN
+        @question.vote_by(current_user,"")
       else
-        render :edit
+        @question.vote_by(current_user,QuestionMod::QuestionVote::KIND_DOWN)
       end
-    end
-
-    def destroy
-      @question_vote = QuestionMod::QuestionVote.find(params[:id])
-      @question_vote.destroy
       redirect_to "/questions"
     end
 
     private
-      def question_vote_params
-        params.require(:question_vote).permit(:kind, :question_id)
+      def find_question
+        @question = QuestionMod::Question.find(params[:question_id])
+        @question_id = params[:question_id]
       end
   end
 end
