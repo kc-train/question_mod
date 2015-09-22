@@ -1,0 +1,37 @@
+.page-answers-index
+  .question-title
+    = @question.title
+  .question-content
+    = @question.content
+  - if @question.creator != current_user && @question.answers.where(:creator => current_user).count == 0
+    %button.btn.btn-default.answer-create
+      = link_to '回答', "answers/new", :method => :get
+  %ul.question-answer
+    - @question.answers.order(vote_sum: :desc).each do |answer|
+      %table.table.table-striped
+        %tr.row
+          %td.col-md-1
+            = answer.creator.name
+          %td.col-md-1
+            - if answer.creator != current_user
+              .answer-agree-vote
+                %a.glyphicon.glyphicon-menu-up{:href => "answers/#{answer.id}/answer_votes/agree"}
+                = answer.answer_votes.where(:kind => :up).count
+              .answer-against-vote
+                %a.glyphicon.glyphicon-menu-down{:href => "answers/#{answer.id}/answer_votes/against"}
+                = answer.answer_votes.where(:kind => :down).count
+            - else
+              .answer-agree-vote
+                赞同
+                = answer.answer_votes.where(:kind => :up).count
+              .answer-against-vote
+                反对
+                = answer.answer_votes.where(:kind => :down).count
+          %td.col-md-10
+            %ul.answer.content
+              = answer.content
+              - if answer.creator == current_user
+                %button.btn.btn-defualt
+                  = link_to '修改', "answers/#{answer.id}/edit", :method => :get
+      
+  

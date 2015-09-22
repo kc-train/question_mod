@@ -11,7 +11,7 @@ module QuestionMod
       else
         @answer.vote_by(current_user,QuestionMod::QuestionVote::KIND_UP)
       end
-      redirect_to "/questions"
+      redirect_to "/questions/#{@answer.question.id}/answers"
     end
 
     def against
@@ -20,7 +20,7 @@ module QuestionMod
       else
         @answer.vote_by(current_user,QuestionMod::QuestionVote::KIND_DOWN)
       end
-      redirect_to "/questions"
+      redirect_to "/questions/#{@answer.question.id}/answers"
     end
 
     private

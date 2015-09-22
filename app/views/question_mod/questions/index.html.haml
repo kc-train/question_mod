@@ -1,49 +1,34 @@
 .page-questions-index
   %ul.questions
     - @questions.each do |question|
-      .question-vote
-        - if question.creator != current_user
-          .question-agree-vote
-            %a.glyphicon.glyphicon-menu-up{:href => "questions/#{question.id}/question_votes/agree"}
-            = question.question_votes.where(:kind => :up).count
-          .question-against-vote
-            %a.glyphicon.glyphicon-menu-down{:href => "questions/#{question.id}/question_votes/against"}
-            = question.question_votes.where(:kind => :down).count
-        - else
-          .question-agree-vote
-            %a.glyphicon.glyphicon-menu-up
-            = question.question_votes.where(:kind => :up).count
-          .question-against-vote
-            %a.glyphicon.glyphicon-menu-down
-            = question.question_votes.where(:kind => :down).count
-      .question
-        %ul.question-title
-          = question.title
-        %ul.question-content
-          = question.content
-          %a
-            - if question.creator != current_user && question.answers.where(:creator => current_user).count == 0
-              = link_to '回答', "questions/#{question.id}/answers/new", :method => :get
-          %ul.question-answer
-            - question.answers.order(vote_sum: :desc).each do |answer|
-              - if answer.creator != current_user
-                .answer-agree-vote
-                  %a.glyphicon.glyphicon-menu-up{:href => "questions/#{question.id}/answers/#{answer.id}/answer_votes/agree"}
-                  = answer.answer_votes.where(:kind => :up).count
-                .answer-against-vote
-                  %a.glyphicon.glyphicon-menu-down{:href => "questions/#{question.id}/answers/#{answer.id}/answer_votes/against"}
-                  = answer.answer_votes.where(:kind => :down).count
+      %table.table.table-striped
+        %tr.row
+          %td.col-md-1
+            = question.creator.name
+          %td.col-md-1
+            .question-vote
+              - if question.creator != current_user
+                .question-agree-vote
+                  %a.glyphicon.glyphicon-menu-up{:href => "questions/#{question.id}/question_votes/agree"}
+                  = question.question_votes.where(:kind => :up).count
+                .question-against-vote
+                  %a.glyphicon.glyphicon-menu-down{:href => "questions/#{question.id}/question_votes/against"}
+                  = question.question_votes.where(:kind => :down).count
               - else
-                .answer-agree-vote
-                  %a.glyphicon.glyphicon-menu-up
-                  = answer.answer_votes.where(:kind => :up).count
-                .answer-against-vote
-                  %a.glyphicon.glyphicon-menu-down
-                  = answer.answer_votes.where(:kind => :down).count
-              %ul.answer.content
-                = answer.content
-                - if answer.creator == current_user
-                  = link_to '修改', "questions/#{question.id}/answers/#{answer.id}/edit", :method => :get
-                
-  %a.btn
+                .question-agree-vote
+                  赞同
+                  = question.question_votes.where(:kind => :up).count
+                .question-against-vote
+                  反对
+                  = question.question_votes.where(:kind => :down).count
+          %td.col-md-10
+            .question-title
+              %a.question-title{:href => "questions/#{question.id}/answers"}
+                = question.title
+      %tr.row
+        %td.col-md-11
+          .question-content    
+            %ul.question-content
+              = question.content          
+  %button.btn.btn-defualt
     = link_to '提问', "/questions/new", :method => :get
