@@ -28,5 +28,8 @@
     %span 登出
   .desc
     %span 访问
-    %a.to-questions{:href => '/questions'} /questions
+    - if current_user != nil
+      %a.to-questions{:href => '/questions'} /questions
+    -else 
+      %a.to-questions{:href => '/auth/login'} /questions
     %span 提问

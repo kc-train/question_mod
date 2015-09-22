@@ -3,9 +3,9 @@
     = @question.title
   .question-content
     = @question.content
-  - if @question.creator != current_user && @question.answers.where(:creator => current_user).count == 0
-    %button.btn.btn-default.answer-create
-      = link_to '回答', "answers/new", :method => :get
+  
+    / %button.btn.btn-default.answer-create
+    /   = link_to '回答', "answers/new", :method => :get
   %ul.question-answer
     - @question.answers.order(vote_sum: :desc).each do |answer|
       %table.table.table-striped
@@ -33,5 +33,9 @@
               - if answer.creator == current_user
                 %button.btn.btn-defualt
                   = link_to '修改', "answers/#{answer.id}/edit", :method => :get
+    - if @question.creator != current_user && @question.answers.where(:creator => current_user).count == 0
+      = simple_form_for [@question,@answer] do |f|
+        = f.input 'content'
+        = f.submit '提交'
       
   

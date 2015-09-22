@@ -1,4 +1,6 @@
 .page-questions-index
+  %button.btn.btn-defualt
+    = link_to '提问', "/questions/new", :method => :get
   %ul.questions
     - @questions.each do |question|
       %table.table.table-striped
@@ -30,5 +32,3 @@
           .question-content    
             %ul.question-content
               = question.content          
-  %button.btn.btn-defualt
-    = link_to '提问', "/questions/new", :method => :get

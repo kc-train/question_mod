@@ -3,6 +3,7 @@ module QuestionMod
     before_action :find_question
     def index
       @answers = QuestionMod::Answer.order(vote_sum: :desc).all
+      @answer = @question.answers.new
     end
 
     def new
