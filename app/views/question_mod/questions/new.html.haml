@@ -1,5 +1,5 @@
 .page-new-questions
   = simple_form_for @question do |f|
     = f.input 'title'
-    = f.input 'content'
+    = f.input 'content', as: :text
     = f.submit '提交'

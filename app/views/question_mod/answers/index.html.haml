@@ -3,9 +3,6 @@
     = @question.title
   .question-content
     = @question.content
-  
-    / %button.btn.btn-default.answer-create
-    /   = link_to '回答', "answers/new", :method => :get
   %ul.question-answer
     - @question.answers.order(vote_sum: :desc).each do |answer|
       %table.table.table-striped
@@ -28,14 +25,17 @@
                 反对
                 = answer.answer_votes.where(:kind => :down).count
           %td.col-md-10
-            %ul.answer.content
-              = answer.content
+            .answer-content
+              %span.hidden.answer-id
+                = answer.id
+              %span.content
+                = answer.content
               - if answer.creator == current_user
-                %button.btn.btn-defualt
-                  = link_to '修改', "answers/#{answer.id}/edit", :method => :get
+                %button.btn.btn-defualt.answer-update
+                  =  '修改'
     - if @question.creator != current_user && @question.answers.where(:creator => current_user).count == 0
       = simple_form_for [@question,@answer] do |f|
-        = f.input 'content'
+        = f.input_field 'content', as: :text
         = f.submit '提交'
       
   

@@ -25,7 +25,7 @@
                   = question.question_votes.where(:kind => :down).count
           %td.col-md-10
             .question-title
-              %a.question-title{:href => "questions/#{question.id}/answers"}
+              %a.question-title{:href => "/questions/#{question.id}/answers"}
                 = question.title
       %tr.row
         %td.col-md-11
