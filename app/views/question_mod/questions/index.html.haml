@@ -1,6 +1,6 @@
 .page-questions-index
-  %button.btn.btn-defualt
-    = link_to '提问', "/questions/new", :method => :get
+  %button.btn.btn-defualt.add-question
+    = '提问'
   %ul.questions
     - @questions.each do |question|
       %table.table.table-striped

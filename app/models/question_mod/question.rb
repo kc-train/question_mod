@@ -12,7 +12,7 @@ module QuestionMod
     # down -1
     field :vote_sum, :type => Integer, :default => 0
 
-    validates :title, :presence => true
+    validates :title, :presence => true, :uniqueness => true
     validates :content, :presence => true
     validates :creator, :presence => true
     # creator 不能为空
