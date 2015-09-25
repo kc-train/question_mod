@@ -20,7 +20,8 @@ module QuestionMod
     belongs_to :creator,    :class_name => 'User'
 
     # question 不能为空
-    belongs_to :question,     :class_name => 'QuestionMod::Question'
-    has_many   :answer_votes, :class_name => 'QuestionMod::AnswerVote'
+    belongs_to :question,       :class_name => 'QuestionMod::Question'
+    has_many   :answer_votes,   :class_name => 'QuestionMod::AnswerVote'
+    has_many   :answer_comments,:class_name => 'QuestionMod::AnswerComment'
   end
 end

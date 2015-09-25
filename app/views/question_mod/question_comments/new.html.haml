@@ -1,0 +1,4 @@
+.page-new-question-comments
+  = simple_form_for [@question,@question_comment] do |f|
+    = f.input 'content'
+    = f.submit '提交'

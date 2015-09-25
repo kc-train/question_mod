@@ -16,8 +16,9 @@ module QuestionMod
     validates :content, :presence => true
     validates :creator, :presence => true
     # creator 不能为空
-    belongs_to :creator,        :class_name => 'User'
-    has_many   :answers,        :class_name => 'QuestionMod::Answer'
-    has_many   :question_votes, :class_name => 'QuestionMod::QuestionVote'
+    belongs_to :creator,         :class_name => 'User'
+    has_many   :answers,         :class_name => 'QuestionMod::Answer'
+    has_many   :question_votes,  :class_name => 'QuestionMod::QuestionVote'
+    has_many   :question_comments,:class_name => 'QuestionMod::QuestionComment'
   end
 end

@@ -8,7 +8,8 @@ class AnswerPage
     @bind_events()
 
   delete_blank: (str)->
-    str.replace(/(^\s+)|(\s+$)/g,"")
+    # str.replace(/(^\s+)|(\s+$)/g,"");
+    str.replace(/\s/g,"");
 
   reback_answer_content: (dom,update_content)->
     jQuery('.textarea').closest('td').after(dom);
@@ -17,14 +18,15 @@ class AnswerPage
 
   content_text_area: (answer_content)->
     content_text_area = "<td>"+
-        "<input type='text' name='textfield' class='textarea' value=" + answer_content + ">" +
+        "<textarea type='text' name='textfield' class='textarea'>" + answer_content + "</textarea>" +
         "<button class='submit'> 提交 </span>"+
         "<button class='cancel'>取消</span>"+
         "</td>"
 
   bind_events: ->
     @$elm.on 'click','.answer-update',(evt)=>
-      answer_content = jQuery(event.target).closest('.answer-content').find('.content').text()
+      str = jQuery(event.target).closest('.answer-content').find('.content').text()
+      answer_content = @delete_blank(str)
       content_text_area = @content_text_area(answer_content)
       dom = jQuery(event.target).closest('.answer-content').clone()
       jQuery(event.target).closest('.answer-content').before(content_text_area)
@@ -37,7 +39,8 @@ class AnswerPage
 
       @$elm.on 'click','.submit',(evt)=>
         id = @delete_blank(answer_id)
-        update_content = jQuery(event.target).closest('td').find('.textarea').val()
+        alert(id)
+        update_content = jQuery(event.target).closest('td').find('.textarea').text()
         url = 'answers/' + id
         jQuery.ajax
           url: url,
@@ -51,45 +54,73 @@ class QuestionPage
   constructor: (@$elm)->
     @bind_events()
 
-  new_question_form: ->
-    question_text_area = "<div>" +
-        "<div>" + 
-        "<div>" + "title" + "</div>" +
-        "<input class='string required title' required='required' aria-required='true' type='text' name='question[title]' id='question_title'>" +
-        "</div>" + 
-        "<div>" + 
-        "<div>" + "content" + "</div>" +
-        "<textarea class='text required content' required='required' aria-required='true' name='question[content]' id='question_content'></textarea>" +
-        "</div>" +  
-        "<button class='submit'> 提交 </span>"+
-        "<button class='cancel'>取消</span>"+
+  add_buttons: ->
+    add_buttons = "<div>" +
+        "<span class='cancel'>取消</span>"+
+        "<button class='submit'>评论</span>"+
         "</div>"
 
-  reback_question_button: ($add_button)->
-    jQuery(event.target).parent().before($add_button)
-    jQuery(event.target).parent().remove()
+  delete_blank: (str)->
+    str.replace(/(^\s+)|(\s+$)/g,"")
+#   new_question_form: ->
+#     question_text_area = "<div>" +
+#         "<div>" + 
+#         "<div>" + "title" + "</div>" +
+#         "<input class='string required title' required='required' aria-required='true' type='text' name='question[title]' id='question_title'>" +
+#         "</div>" + 
+#         "<div>" + 
+#         "<div>" + "content" + "</div>" +
+#         "<textarea class='text required content' required='required' aria-required='true' name='question[content]' id='question_content'></textarea>" +
+#         "</div>" +  
+#         "<button class='submit'> 提交 </span>"+
+#         "<button class='cancel'>取消</span>"+
+#         "</div>"
+
+#   reback_question_button: ($add_button)->
+#     jQuery(event.target).parent().before($add_button)
+#     jQuery(event.target).parent().remove()
 
   bind_events: ->
-    @$elm.on 'click','.add-question',(evt)=>
-      $add_button = jQuery(event.target).clone()
-      jQuery(event.target).remove()
-      form = @new_question_form()
-      @$elm.find('.questions').before(form)
-    
+    @$elm.on 'click','.question-comment-content-area',(evt)=>
+      question_id = jQuery(event.target).closest('.add-comment').find('.question-id').text()
+      dom = @add_buttons()
+      jQuery(event.target).after(dom)
+
       @$elm.on 'click','.cancel',(evt)=>
-        @reback_question_button($add_button)
+        jQuery(event.target).closest('div').remove()
 
       @$elm.on 'click','.submit',(evt)=>
-        title = jQuery(event.target).closest('div').find('.title').val()
-        content = jQuery(event.target).closest('div').find('.content').val()
+        id = @delete_blank(question_id)
+        content = jQuery(event.target).closest('div').find('.question-comment-content-area').val()
+        url = "questions/#{id}/question_comments"
+        alert(url)
         jQuery.ajax
-          url: 'questions',
+          url: url,
           type: 'POST',
           data: {
-            'question[title]': title,
-            'question[content]': content,
+            'question_comment[content]': content,
           },
-          success: @reback_question_button($add_button)
+          # success: @reback_answer_content(dom,update_content)
+#     @$elm.on 'click','.add-question',(evt)=>
+#       $add_button = jQuery(event.target).clone()
+#       jQuery(event.target).remove()
+#       form = @new_question_form()
+#       @$elm.find('.questions').before(form)
+    
+#       @$elm.on 'click','.cancel',(evt)=>
+#         @reback_question_button($add_button)
+
+#       @$elm.on 'click','.submit',(evt)=>
+#         title = jQuery(event.target).closest('div').find('.title').val()
+#         content = jQuery(event.target).closest('div').find('.content').val()
+#         jQuery.ajax
+#           url: 'questions',
+#           type: 'POST',
+#           data: {
+#             'question[title]': title,
+#             'question[content]': content,
+#           },
+#           success: @reback_question_button($add_button)
 
 
 

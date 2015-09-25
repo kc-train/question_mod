@@ -1,12 +1,10 @@
 .page-questions-index
   %button.btn.btn-defualt.add-question
-    = '提问'
+    = link_to '提问', "questions/new", :method => :get
   %ul.questions
     - @questions.each do |question|
       %table.table.table-striped
         %tr.row
-          %td.col-md-1
-            = question.creator.name
           %td.col-md-1
             .question-vote
               - if question.creator != current_user
@@ -23,12 +21,33 @@
                 .question-against-vote
                   反对
                   = question.question_votes.where(:kind => :down).count
+          %td.col-md-1
+            = question.creator.name
           %td.col-md-10
             .question-title
               %a.question-title{:href => "/questions/#{question.id}/answers"}
                 = question.title
-      %tr.row
-        %td.col-md-11
+      %tr
+        %td
           .question-content    
             %ul.question-content
-              = question.content          
+              = question.content
+      %tr
+        %td
+          %a.question-comment-count{:href => '#'}
+            = question.question_comments.count
+            条评论
+      .question-comment-table
+        - question.question_comments.each do |question_comment|
+          %table.table.table-striped
+            %tr
+              %td
+                .question-comment-creator
+                  = question_comment.creator.name
+                .question-comment-content
+                  = question_comment.content
+        .add-question-comment
+          / .question-id.hidden
+          /   = question.id
+          / %input.question-comment-content-area
+          = link_to "pl", "questions/#{question.id}/question_comments/new", method: :get

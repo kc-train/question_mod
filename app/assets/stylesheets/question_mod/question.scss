@@ -1,15 +1,18 @@
 .page-answers-index{
   .question-title{
-    font-size:40px;
+    font-size:18px;
     font-weight:900;
   }
   .question-content{
-    margin:40px;
     text-align: left;
     line-height:20px;
+    display: block;
+  }
+  .answer-count{
+    font-size:18px;
   }
   button.btn.btn-default.answer-create{
-    margin:40px;
+    margin:20px;
   }
 }
 
@@ -23,8 +26,14 @@
     float: left;
   }
   .question-content{
-    margin:80px;
+    margin:30px;
     text-align: left;
     line-height:100px;
+  }
+  a.question-comment-count{
+    margin:100px;
+  }
+  .question-comment-table{
+    margin:100px;
   }
 }

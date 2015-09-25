@@ -1,6 +1,7 @@
 QuestionMod::Engine.routes.draw do
   root 'home#index'
   resources :questions do
+    resources :question_comments 
     resources :question_votes do
       collection do
         get 'agree'
@@ -8,7 +9,8 @@ QuestionMod::Engine.routes.draw do
       end
     end
 
-    resources :answers do 
+    resources :answers do
+      resources :answer_comments 
       resources :answer_votes do
         collection do
           get 'agree'

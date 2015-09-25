@@ -1,14 +1,37 @@
 .page-answers-index
-  .question-title
-    = @question.title
-  .question-content
-    = @question.content
+  %table.table.table-striped
+    %tr.row
+      %td.col-md-1
+      %td.col-md-11
+        .question-title
+          = @question.title
+        .question-content
+          = @question.content
+        %a.question-comment-count{:href => '#'}
+          = @question.question_comments.count
+          条评论
+        .question-comment-table
+          - @question.question_comments.each do |question_comment|
+            %table.table.table-striped
+              %tr
+                %td
+                  .question-comment-creator
+                    = question_comment.creator.name
+                  .question-comment-content
+                    = question_comment.content
+          .add-question-comment
+            = link_to "pl", "question_comments/new", method: :get
+  %table.table.table-striped
+    %tr.row
+      %td.col-md-1
+      %td.col-md-11
+        .answer-count
+          = @question.answers.count 
+          个回答
   %ul.question-answer
     - @question.answers.order(vote_sum: :desc).each do |answer|
       %table.table.table-striped
         %tr.row
-          %td.col-md-1
-            = answer.creator.name
           %td.col-md-1
             - if answer.creator != current_user
               .answer-agree-vote
@@ -24,15 +47,23 @@
               .answer-against-vote
                 反对
                 = answer.answer_votes.where(:kind => :down).count
-          %td.col-md-10
+          %td.col-md-11
+            = answer.creator.name 
             .answer-content
               %span.hidden.answer-id
                 = answer.id
               %span.content
-                = answer.content
+                = simple_format answer.content
               - if answer.creator == current_user
                 %button.btn.btn-defualt.answer-update
                   =  '修改'
+            .question-comment-count
+              %a{:href => ''}
+                = @answer.answer_comments.count
+                条评论
+
+            .add-answer-comment
+              = link_to "pl", "answers/#{answer.id}/answer_comments/new", method: :get
     - if @question.creator != current_user && @question.answers.where(:creator => current_user).count == 0
       = simple_form_for [@question,@answer] do |f|
         = f.input_field 'content', as: :text
