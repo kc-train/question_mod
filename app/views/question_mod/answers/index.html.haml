@@ -3,24 +3,28 @@
     %tr.row
       %td.col-md-1
       %td.col-md-11
-        .question-title
-          = @question.title
-        .question-content
-          = @question.content
-        %a.question-comment-count{:href => '#'}
-          = @question.question_comments.count
-          条评论
-        .question-comment-table
-          - @question.question_comments.each do |question_comment|
-            %table.table.table-striped
-              %tr
-                %td
-                  .question-comment-creator
-                    = question_comment.creator.name
-                  .question-comment-content
-                    = question_comment.content
-          .add-question-comment
-            = link_to "pl", "question_comments/new", method: :get
+        .question-each
+          .question-title
+            = @question.title
+          .question-content
+            = @question.content
+          %a.question-comment-count{:href => '#'}
+            = @question.question_comments.count
+            条评论
+          
+          .question-comment-table.hidden
+            - @question.question_comments.each do |question_comment|
+              %table.table.table-striped
+                %tr
+                  %td
+                    .question-comment-creator
+                      = question_comment.creator.name
+                    .question-comment-content
+                      = question_comment.content
+          .add-question-comment.hidden
+            .question-id.hidden
+              = @question.id
+            %input.question-comment-content-area
   %table.table.table-striped
     %tr.row
       %td.col-md-1
@@ -30,40 +34,52 @@
           个回答
   %ul.question-answer
     - @question.answers.order(vote_sum: :desc).each do |answer|
-      %table.table.table-striped
-        %tr.row
-          %td.col-md-1
-            - if answer.creator != current_user
-              .answer-agree-vote
-                %a.glyphicon.glyphicon-menu-up{:href => "answers/#{answer.id}/answer_votes/agree"}
-                = answer.answer_votes.where(:kind => :up).count
-              .answer-against-vote
-                %a.glyphicon.glyphicon-menu-down{:href => "answers/#{answer.id}/answer_votes/against"}
-                = answer.answer_votes.where(:kind => :down).count
-            - else
-              .answer-agree-vote
-                赞同
-                = answer.answer_votes.where(:kind => :up).count
-              .answer-against-vote
-                反对
-                = answer.answer_votes.where(:kind => :down).count
-          %td.col-md-11
-            = answer.creator.name 
-            .answer-content
-              %span.hidden.answer-id
-                = answer.id
-              %span.content
-                = simple_format answer.content
-              - if answer.creator == current_user
-                %button.btn.btn-defualt.answer-update
-                  =  '修改'
-            .question-comment-count
-              %a{:href => ''}
+      .each-answer
+        %table.table.table-striped
+          %tr.row
+            %td.col-md-1
+              - if answer.creator != current_user
+                .answer-agree-vote
+                  %a.glyphicon.glyphicon-menu-up{:href => "answers/#{answer.id}/answer_votes/agree"}
+                  = answer.answer_votes.where(:kind => :up).count
+                .answer-against-vote
+                  %a.glyphicon.glyphicon-menu-down{:href => "answers/#{answer.id}/answer_votes/against"}
+                  = answer.answer_votes.where(:kind => :down).count
+              - else
+                .answer-agree-vote
+                  赞同
+                  = answer.answer_votes.where(:kind => :up).count
+                .answer-against-vote
+                  反对
+                  = answer.answer_votes.where(:kind => :down).count
+            %td.col-md-11
+              = answer.creator.name 
+              .answer-content
+                %span.hidden.answer-id
+                  = answer.id
+                %span.content
+                  = answer.content
+                - if answer.creator == current_user
+                  %button.btn.btn-defualt.answer-update
+                    =  '修改'
+              %a.question-comment-count
                 = @answer.answer_comments.count
                 条评论
-
-            .add-answer-comment
-              = link_to "pl", "answers/#{answer.id}/answer_comments/new", method: :get
+              .answer-comment-table.hiiden
+                - @answer.answer_comments.each do |answer_comment|
+                  %table.table.table-striped
+                    %tr
+                      %td
+                        .answer-comment-creator
+                          = answer_comment.creator.name
+                        .answer-comment-content
+                          = answer_comment.content
+              .add-answer-comment.hidden
+                .answer-id.hidden
+                  = @answer.id
+                %input.answer-comment-content-area
+                / .add-answer-comment
+                /   = link_to "pl", "answers/#{answer.id}/answer_comments/new", method: :get
     - if @question.creator != current_user && @question.answers.where(:creator => current_user).count == 0
       = simple_form_for [@question,@answer] do |f|
         = f.input_field 'content', as: :text

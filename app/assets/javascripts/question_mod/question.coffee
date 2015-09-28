@@ -8,20 +8,22 @@ class AnswerPage
     @bind_events()
 
   delete_blank: (str)->
-    # str.replace(/(^\s+)|(\s+$)/g,"");
-    str.replace(/\s/g,"");
+    str.replace(/(^\s+)|(\s+$)/g,"");
 
   reback_answer_content: (dom,update_content)->
-    jQuery('.textarea').closest('td').after(dom);
-    jQuery('.textarea').closest('td').closest('.col-md-10').find('.content').text(update_content)
-    jQuery('.textarea').closest('td').remove();
+    jQuery('.textarea').closest('div').after(dom);
+    jQuery('.answer-update').closest('.answer-content').find('.content').text(update_content)
+    jQuery('.textarea').closest('div').remove();
 
   content_text_area: (answer_content)->
-    content_text_area = "<td>"+
-        "<textarea type='text' name='textfield' class='textarea'>" + answer_content + "</textarea>" +
+    content_text_area = "<div>"+
+        "<input type='text' name='textfield' class='textarea' value=" + answer_content + ">" +
         "<button class='submit'> 提交 </span>"+
         "<button class='cancel'>取消</span>"+
-        "</td>"
+        "</div>"
+
+  hide_comment: ->
+    hide_comment = "<a class='hide-comment'>收起评论</a>"
 
   bind_events: ->
     @$elm.on 'click','.answer-update',(evt)=>
@@ -34,13 +36,12 @@ class AnswerPage
       jQuery(event.target).closest('.answer-content').remove()
 
       @$elm.on 'click','.cancel',(evt)=>
-        jQuery(event.target).closest('td').after(dom)
-        jQuery(event.target).closest('td').remove()
+        jQuery(event.target).closest('div').after(dom)
+        jQuery(event.target).closest('div').remove()
 
       @$elm.on 'click','.submit',(evt)=>
         id = @delete_blank(answer_id)
-        alert(id)
-        update_content = jQuery(event.target).closest('td').find('.textarea').text()
+        update_content = jQuery(event.target).closest('div').find('.textarea').val()
         url = 'answers/' + id
         jQuery.ajax
           url: url,
@@ -49,6 +50,30 @@ class AnswerPage
             'answer[content]': update_content,
           },
           success: @reback_answer_content(dom,update_content)
+
+    @$elm.on 'click','.question-comment-count',(evt)=>
+      jQuery(event.target).closest('.question-each').find('.question-comment-table').removeClass('hidden')
+      jQuery(event.target).closest('.question-each').find('.add-question-comment').removeClass('hidden')
+      hide_comment_dom = @hide_comment()
+      jQuery(event.target).after(hide_comment_dom)
+      jQuery(event.target).addClass('hidden')
+      @$elm.on 'click','.hide-comment',(evt)=>
+        jQuery(event.target).closest('.question-each').find('.question-comment-table').addClass('hidden')
+        jQuery(event.target).closest('.question-each').find('.add-question-comment').addClass('hidden')
+        jQuery(event.target).closest('.question-each').find('.question-comment-count').removeClass('hidden')
+        jQuery(event.target).remove()
+
+    @$elm.on 'click','.answer-comment-count',(evt)=>
+      jQuery(event.target).closest('.answe-each').find('.answer-comment-table').removeClass('hidden')
+      jQuery(event.target).closest('.answer-each').find('.add-answer-comment').removeClass('hidden')
+      hide_comment_dom = @hide_comment()
+      jQuery(event.target).after(hide_comment_dom)
+      jQuery(event.target).addClass('hidden')
+      @$elm.on 'click','.hide-comment',(evt)=>
+        jQuery(event.target).closest('.answer-each').find('.answer-comment-table').addClass('hidden')
+        jQuery(event.target).closest('.answer-each').find('.add-answer-comment').addClass('hidden')
+        jQuery(event.target).closest('.answer-each').find('.answer-comment-count').removeClass('hidden')
+        jQuery(event.target).remove()
 
 class QuestionPage
   constructor: (@$elm)->
@@ -60,29 +85,28 @@ class QuestionPage
         "<button class='submit'>评论</span>"+
         "</div>"
 
+  hide_comment: ->
+    hide_comment = "<a class='hide-comment'>收起评论</a>"
+
   delete_blank: (str)->
     str.replace(/(^\s+)|(\s+$)/g,"")
-#   new_question_form: ->
-#     question_text_area = "<div>" +
-#         "<div>" + 
-#         "<div>" + "title" + "</div>" +
-#         "<input class='string required title' required='required' aria-required='true' type='text' name='question[title]' id='question_title'>" +
-#         "</div>" + 
-#         "<div>" + 
-#         "<div>" + "content" + "</div>" +
-#         "<textarea class='text required content' required='required' aria-required='true' name='question[content]' id='question_content'></textarea>" +
-#         "</div>" +  
-#         "<button class='submit'> 提交 </span>"+
-#         "<button class='cancel'>取消</span>"+
-#         "</div>"
-
-#   reback_question_button: ($add_button)->
-#     jQuery(event.target).parent().before($add_button)
-#     jQuery(event.target).parent().remove()
 
   bind_events: ->
+    @$elm.on 'click','.question-comment-count',(evt)=>
+      jQuery(event.target).closest('.question-each').find('.question-comment-table').removeClass('hidden')
+      jQuery(event.target).closest('.question-each').find('.add-question-comment').removeClass('hidden')
+      hide_comment_dom = @hide_comment()
+      jQuery(event.target).after(hide_comment_dom)
+      jQuery(event.target).addClass('hidden')
+      @$elm.on 'click','.hide-comment',(evt)=>
+        jQuery(event.target).closest('.question-each').find('.question-comment-table').addClass('hidden')
+        jQuery(event.target).closest('.question-each').find('.add-question-comment').addClass('hidden')
+        jQuery(event.target).closest('.question-each').find('.question-comment-count').removeClass('hidden')
+        jQuery(event.target).remove()
+
+
     @$elm.on 'click','.question-comment-content-area',(evt)=>
-      question_id = jQuery(event.target).closest('.add-comment').find('.question-id').text()
+      question_id = jQuery(event.target).closest('.add-question-comment').find('.question-id').text()
       dom = @add_buttons()
       jQuery(event.target).after(dom)
 
@@ -93,34 +117,14 @@ class QuestionPage
         id = @delete_blank(question_id)
         content = jQuery(event.target).closest('div').find('.question-comment-content-area').val()
         url = "questions/#{id}/question_comments"
-        alert(url)
         jQuery.ajax
           url: url,
           type: 'POST',
           data: {
             'question_comment[content]': content,
-          },
+          }
           # success: @reback_answer_content(dom,update_content)
-#     @$elm.on 'click','.add-question',(evt)=>
-#       $add_button = jQuery(event.target).clone()
-#       jQuery(event.target).remove()
-#       form = @new_question_form()
-#       @$elm.find('.questions').before(form)
-    
-#       @$elm.on 'click','.cancel',(evt)=>
-#         @reback_question_button($add_button)
 
-#       @$elm.on 'click','.submit',(evt)=>
-#         title = jQuery(event.target).closest('div').find('.title').val()
-#         content = jQuery(event.target).closest('div').find('.content').val()
-#         jQuery.ajax
-#           url: 'questions',
-#           type: 'POST',
-#           data: {
-#             'question[title]': title,
-#             'question[content]': content,
-#           },
-#           success: @reback_question_button($add_button)
 
 
 
