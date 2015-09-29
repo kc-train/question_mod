@@ -22,6 +22,8 @@
                     .question-comment-content
                       = question_comment.content
           .add-question-comment.hidden
+            .current-user.hidden
+              = current_user.name
             .question-id.hidden
               = @question.id
             %input.question-comment-content-area
@@ -34,7 +36,7 @@
           个回答
   %ul.question-answer
     - @question.answers.order(vote_sum: :desc).each do |answer|
-      .each-answer
+      .answer-each
         %table.table.table-striped
           %tr.row
             %td.col-md-1
@@ -62,11 +64,11 @@
                 - if answer.creator == current_user
                   %button.btn.btn-defualt.answer-update
                     =  '修改'
-              %a.question-comment-count
-                = @answer.answer_comments.count
+              %a.answer-comment-count
+                = answer.answer_comments.count
                 条评论
-              .answer-comment-table.hiiden
-                - @answer.answer_comments.each do |answer_comment|
+              .answer-comment-table.hidden
+                - answer.answer_comments.each do |answer_comment|
                   %table.table.table-striped
                     %tr
                       %td
@@ -75,14 +77,14 @@
                         .answer-comment-content
                           = answer_comment.content
               .add-answer-comment.hidden
+                .current-user.hidden
+                  = current_user.name
                 .answer-id.hidden
-                  = @answer.id
+                  = answer.id
                 %input.answer-comment-content-area
-                / .add-answer-comment
-                /   = link_to "pl", "answers/#{answer.id}/answer_comments/new", method: :get
     - if @question.creator != current_user && @question.answers.where(:creator => current_user).count == 0
       = simple_form_for [@question,@answer] do |f|
-        = f.input_field 'content', as: :text
-        = f.submit '提交'
+        = f.input 'content', as: :text, input_html: { class: 'form-control' }
+        = f.submit '提交', input_html: { class: 'btn-defualt' }
       
   

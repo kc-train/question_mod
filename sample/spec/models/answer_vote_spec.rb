@@ -84,7 +84,6 @@ RSpec.describe QuestionMod::AnswerVote, type: :model do
     arr = @answers.map do |answer|
       answer.content
     end
-    p arr
     expect(arr).to eq(["2", "1", "5", "4", "3"])
   end
 end
