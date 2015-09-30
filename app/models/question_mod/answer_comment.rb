@@ -5,7 +5,7 @@ module QuestionMod
     
     field :content, :type => String
 
-    validates :content, :presence => true
+    validates :content, :presence => true, :uniqueness => true
     validates :creator, :presence => true
     validates :answer, :presence => true
 

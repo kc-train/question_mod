@@ -13,8 +13,8 @@
             条评论
           
           .question-comment-table.hidden
-            - @question.question_comments.each do |question_comment|
-              %table.table.table-striped
+            %table.table.table-striped
+              - @question.question_comments.each do |question_comment|
                 %tr
                   %td
                     .question-comment-creator
@@ -68,8 +68,8 @@
                 = answer.answer_comments.count
                 条评论
               .answer-comment-table.hidden
-                - answer.answer_comments.each do |answer_comment|
-                  %table.table.table-striped
+                %table.table.table-striped
+                  - answer.answer_comments.each do |answer_comment|
                     %tr
                       %td
                         .answer-comment-creator

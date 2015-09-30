@@ -41,9 +41,15 @@ class Function
       "</td>" +
       "</tr>"
 
-  view_new_comment: (content,current_user)->
+  view_new_question_comment: (content,current_user)->
     new_comment = @new_comment(content,current_user)
-    jQuery(event.target).closest('.question-each').find('.question-comment-table').find('tr').last().after(new_comment)
+    jQuery(event.target).closest('.question-each').find('.question-comment-table').find('.table-striped').append(new_comment)
+    jQuery(event.target).closest('div').remove()
+
+  view_new_answer_comment: (content,current_user)->
+    new_comment = @new_comment(content,current_user)
+    jQuery(event.target).closest('.answer-each').find('.answer-comment-table').find('.table-striped').append(new_comment)
+    jQuery(event.target).closest('div').remove()
 
   question_comment_view: ()->
     jQuery(event.target).closest('.question-each').find('.question-comment-table').removeClass('hidden')
@@ -80,7 +86,7 @@ class AnswerPage extends Function
     jQuery('.textarea').closest('div').remove();
 
   bind_events: ->
-    @$elm.on 'click','.answer-update',(evt)=>
+    @$elm.on 'click', '.answer-update', (evt)=>
       str = jQuery(event.target).closest('.answer-content').find('.content').text()
       answer_content = @delete_blank(str)
       content_text_area = @content_text_area(answer_content)
@@ -89,7 +95,7 @@ class AnswerPage extends Function
       answer_id = jQuery(event.target).closest('.answer-content').find('.answer-id').text()
       jQuery(event.target).closest('.answer-content').remove()
 
-      @$elm.on 'click','.cancel',(evt)=>
+      @$elm.on 'click', '.cancel', (evt)=>
         jQuery(event.target).closest('div').after(dom)
         jQuery(event.target).closest('div').remove()
 
@@ -97,7 +103,7 @@ class AnswerPage extends Function
         id = @delete_blank(answer_id)
         update_content = jQuery(event.target).closest('div').find('.textarea').val()
         url = 'answers/' + id
-        @jQuery_ajax(url,'PATCH',update_content,@reback_answer_content(dom,update_content))
+        @jQuery_ajax(url, 'PATCH', update_content, @reback_answer_content(dom,update_content))
 
     @$elm.on 'click','.question-comment-count',(evt)=>
       @question_comment_view()
@@ -111,16 +117,21 @@ class AnswerPage extends Function
         jQuery(event.target).closest('div').remove()
 
       @$elm.on 'click','.submit',(evt)=>
+        content = jQuery(event.target).closest('.add-question-comment').find('.question-comment-content-area').val()
         current_user = @delete_blank(jQuery(event.target).closest('.question-each').find('.current-user').text())
-        jQuery(event.target).closest('div').remove()
         id = @delete_blank(question_id)
-        content = jQuery(event.target).closest('div').find('.question-comment-content-area').val()
-        url = "questions/#{id}/question_comments"
-        @jQuery.ajax(url,'POST',content,@view_new_comment(content,current_user))
+        url = "question_comments"
+        # @jQuery_ajax(url,'POST','question_comment[content]',content,@view_new_comment(content,current_user))
+        jQuery.ajax
+          url: url,
+          type: 'POST',
+          data: {
+            'question_comment[content]': content,
+          },
+          success: @view_new_question_comment(content,current_user)
 
     @$elm.on 'click','.answer-comment-count',(evt)=>
       @answer_comment_view()
-
 
     @$elm.on 'click','.answer-comment-content-area',(evt)=>
       answer_id = jQuery(event.target).closest('.add-answer-comment').find('.answer-id').text()
@@ -131,13 +142,18 @@ class AnswerPage extends Function
         jQuery(event.target).closest('div').remove()
 
       @$elm.on 'click','.submit',(evt)=>
+        content = jQuery(event.target).closest('.add-answer-comment').find('.answer-comment-content-area').val()
         current_user = @delete_blank(jQuery(event.target).closest('.answer-each').find('.current-user').text())
-        jQuery(event.target).closest('div').remove()
-        answer_id = @delete_blank(answer_id)
-        content = jQuery(event.target).closest('div').find('.answer-comment-content-area').val()
+        answer_id = @delete_blank(answer_id)  
         url = "answers/#{answer_id}/answer_comments"
-        @jQuery.ajax(url,'POST',content,@view_new_comment(content,current_user))
-
+        # @jQuery_ajax(url,'POST',content,@view_new_comment(content,current_user))
+        jQuery.ajax
+          url: url,
+          type: 'POST',
+          data: {
+            'answer_comment[content]': content,
+          },
+          success: @view_new_answer_comment(content,current_user)
 
 class QuestionPage extends Function
   constructor: (@$elm)->
@@ -158,11 +174,16 @@ class QuestionPage extends Function
       @$elm.on 'click','.submit',(evt)=>
         current_user = @delete_blank(jQuery(event.target).closest('.question-each').find('.current-user').text())
         content = jQuery(event.target).closest('.add-question-comment').find('.question-comment-content-area').val()
-        jQuery(event.target).closest('div').remove()
         id = @delete_blank(question_id)
-        url = "/questions/#{id}/question_comments"
-        @jQuery_ajax(url,'POST',content,@view_new_comment(content,current_user))
-
+        url = "questions/#{id}/question_comments"
+        # @jQuery_ajax(url,'POST','question_comment[content]',content,@view_new_comment(content,current_user))
+        jQuery.ajax
+          url: url,
+          type: 'POST',
+          data: {
+            'question_comment[content]': content,
+          },
+          success: @view_new_question_comment(content,current_user)
 
 
 

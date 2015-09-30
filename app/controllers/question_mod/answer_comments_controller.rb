@@ -13,9 +13,6 @@ module QuestionMod
     def create
       @answer_comment = @answer.answer_comments.create(answer_comment_params)
       @answer_comment.creator = current_user
-      if @answer_comment.save
-        redirect_to "question/#{@question.id}/answer"
-      end
     end
 
     def destroy
