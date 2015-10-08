@@ -11,5 +11,6 @@ module QuestionMod
 
     belongs_to :creator,  :class_name => 'User'
     belongs_to :question, :class_name => 'QuestionMod::Question'
+    belongs_to :question_comment, :class_name => 'QuestionMod::QuestionComment'
   end
 end

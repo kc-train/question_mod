@@ -17,10 +17,19 @@
               - @question.question_comments.each do |question_comment|
                 %tr
                   %td
+                    .question-comment-id.hidden
+                      = question_comment.id
                     .question-comment-creator
                       = question_comment.creator.name
                     .question-comment-content
                       = question_comment.content
+                    .question-comment-created-time
+                      创建于
+                      = question_comment.created_at
+                      %a.question-comment-response
+                        = '回复'
+                      - if question_comment.creator == current_user
+                        = link_to '删除', "question_comments/#{question_comment.id}", :method => :delete
           .add-question-comment.hidden
             .current-user.hidden
               = current_user.name
@@ -64,9 +73,14 @@
                 - if answer.creator == current_user
                   %button.btn.btn-defualt.answer-update
                     =  '修改'
-              %a.answer-comment-count
-                = answer.answer_comments.count
-                条评论
+              .answer-information
+                创建于
+                = answer.created_at
+                编辑于
+                = answer.updated_at
+                %a.answer-comment-count
+                  = answer.answer_comments.count
+                  条评论
               .answer-comment-table.hidden
                 %table.table.table-striped
                   - answer.answer_comments.each do |answer_comment|
@@ -76,6 +90,13 @@
                           = answer_comment.creator.name
                         .answer-comment-content
                           = answer_comment.content
+                        .answer-comment-created-time
+                          创建于
+                          = answer_comment.created_at
+                          %a.answer-comment-response
+                            = '回复'
+                          - if answer_comment.creator == current_user
+                            = link_to '删除', "answers/#{answer.id}/answer_comments/#{answer_comment.id}", :method => :delete
               .add-answer-comment.hidden
                 .current-user.hidden
                   = current_user.name
@@ -85,6 +106,6 @@
     - if @question.creator != current_user && @question.answers.where(:creator => current_user).count == 0
       = simple_form_for [@question,@answer] do |f|
         = f.input 'content', as: :text, input_html: { class: 'form-control' }
-        = f.submit '提交', input_html: { class: 'btn-defualt' }
+        %button.btn.btn-defualt 提交
       
   

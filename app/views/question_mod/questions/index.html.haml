@@ -47,10 +47,16 @@
                       = question_comment.creator.name
                     .question-comment-content
                       = question_comment.content
+                    .question-comment-created-time
+                      创建于
+                      = question_comment.created_at
+                      %a.question-comment-response
+                        = '回复'
+                      - if question_comment.creator == current_user
+                        = link_to '删除', "/questions/#{question.id}/question_comments/#{question_comment.id}", :method => :delete
           .add-question-comment.hidden
             .current-user.hidden
               = current_user.name
             .question-id.hidden
               = question.id
             %input.question-comment-content-area
-            / = link_to "pl", "questions/#{question.id}/question_comments/new", method: :get

@@ -11,8 +11,8 @@ class Function
   content_text_area: (answer_content)->
     content_text_area = "<div>"+
         "<input type='text' name='textfield' class='textarea' value=" + answer_content + ">" +
-        "<button class='submit'> 提交 </span>"+
-        "<button class='cancel'>取消</span>"+
+        "<button class='submit btn btn-defualt'> 提交 </span>"+
+        "<button class='cancel btn btn-defualt'>取消</span>"+
         "</div>"
 
   hide_comment: ->
@@ -21,7 +21,7 @@ class Function
   add_buttons: ->
     add_buttons = "<div>" +
         "<span class='cancel'>取消</span>"+
-        "<button class='submit'>评论</span>"+
+        "<button class='submit  btn btn-defualt'>评论</span>"+
         "</div>"
 
   jQuery_ajax: (uri,request_type,contents,success_fuction)->
@@ -154,6 +154,29 @@ class AnswerPage extends Function
             'answer_comment[content]': content,
           },
           success: @view_new_answer_comment(content,current_user)
+
+    @$elm.on 'click','.question-comment-response',(evt)=>
+      id = @delete_blank(jQuery(event.target).closest('td').find('.question-comment-id').text())
+      alert(id)
+      content_text_area = @content_text_area("")
+      jQuery(event.target).closest('td').append(content_text_area)
+
+      @$elm.on 'click', '.cancel', (evt)=>
+        jQuery(event.target).closest('div').remove()
+
+      @$elm.on 'click','.submit',(evt)=>
+        content = jQuery(event.target).closest('.add-question-comment').find('.question-comment-content-area').val()
+        current_user = @delete_blank(jQuery(event.target).closest('.question-each').find('.current-user').text())
+        url = "question_comments"
+        # @jQuery_ajax(url,'POST','question_comment[content]',content,@view_new_comment(content,current_user))
+        jQuery.ajax
+          url: url,
+          type: 'POST',
+          data: {
+            'question_comment[content]': content,
+            'question_comment[question_comment_id]': id,
+          },
+          success: @view_new_question_comment(content,current_user)
 
 class QuestionPage extends Function
   constructor: (@$elm)->

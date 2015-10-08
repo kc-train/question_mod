@@ -18,7 +18,9 @@ module QuestionMod
     end
 
     def destroy
+      @question_comment = QuestionMod::QuestionComment.find(params[:id])
       @question_comment.destroy
+      redirect_to "/questions/#{@question_id}/answers"
     end
 
     private
