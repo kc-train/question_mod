@@ -10,7 +10,7 @@ module QuestionMod
     end
 
     def create
-      @question_comment = @question.question_comments.create(answer_comment_params)
+      @question_comment = @question.question_comments.create(question_comment_params)
       @question_comment.creator = current_user
       if @question_comment.save
         redirect_to "/questions"
@@ -25,8 +25,8 @@ module QuestionMod
 
     private
 
-      def answer_comment_params  
-        params.require(:question_comment).permit(:content)
+      def question_comment_params  
+        params.require(:question_comment).permit(:content, :question_comment_id)
       end
 
       def find_question

@@ -31,7 +31,7 @@ module QuestionMod
       end
 
       def answer_comment_params  
-        params.require(:answer_comment).permit(:content)
+        params.require(:answer_comment).permit(:content, :answer_comment_id)
       end
 
       def find_answer

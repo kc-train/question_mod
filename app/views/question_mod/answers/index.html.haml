@@ -20,7 +20,12 @@
                     .question-comment-id.hidden
                       = question_comment.id
                     .question-comment-creator
-                      = question_comment.creator.name
+                      - if question_comment.question_comment_id != nil
+                        = question_comment.creator.name
+                        回复  
+                        = question_comment.question_comment.creator.name
+                      -else
+                        = question_comment.creator.name
                     .question-comment-content
                       = question_comment.content
                     .question-comment-created-time
@@ -86,8 +91,15 @@
                   - answer.answer_comments.each do |answer_comment|
                     %tr
                       %td
+                        .answer-comment-id.hidden
+                          = answer_comment.id
                         .answer-comment-creator
-                          = answer_comment.creator.name
+                          - if answer_comment.answer_comment_id != nil
+                            = answer_comment.creator.name
+                            回复  
+                            = answer_comment.answer_comment.creator.name
+                          -else
+                            = answer_comment.creator.name
                         .answer-comment-content
                           = answer_comment.content
                         .answer-comment-created-time

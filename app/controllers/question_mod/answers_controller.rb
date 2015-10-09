@@ -29,8 +29,6 @@ module QuestionMod
       @answer.update(answer_params)
       if @answer.save
         redirect_to "/questions/#{@question.id}/answers"
-      else
-        render :edit
       end
     end
 
