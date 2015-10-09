@@ -192,7 +192,7 @@ class AnswerPage extends Function
         content = @question_get_input_value()
         current_user = @question_get_current_user()
         url = "question_comments"
-        @question_comment_jQuery_ajax(url,'POST',content,@view_new_comment(content,current_user))
+        @question_comment_jQuery_ajax(url,'POST',content,@view_new_question_comment(content,current_user))
 
     @$elm.on 'click','.answer-comment-count',(evt)=>
       @answer_comment_view()
@@ -209,7 +209,7 @@ class AnswerPage extends Function
         content = @answer_get_input_value()
         current_user = @answer_get_current_user()
         url = "answers/#{answer_id}/answer_comments"
-        @answer_comment_jQuery_ajax(url,'POST',content,@view_new_comment(content,current_user))
+        @answer_comment_jQuery_ajax(url,'POST',content,@view_new_answer_comment(content,current_user))
 
     @$elm.on 'click','.question-comment-response',(evt)=>
       id = @get_question_comment_id()
