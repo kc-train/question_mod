@@ -115,28 +115,40 @@ class Function
     jQuery(event.target).closest('.answer-each').find('.answer-comment-table').find('.table-striped').append(new_comment)
     @delete_input_and_buttons()
 
+  question_comment_remove_hidden: (classname)->
+    jQuery(event.target).closest('.question-each').find(classname).removeClass('hidden')
+
+  question_comment_add_hidden: (classname)->
+    jQuery(event.target).closest('.question-each').find(classname).addClass('hidden')
+
   question_comment_view: ()->
-    jQuery(event.target).closest('.question-each').find('.question-comment-table').removeClass('hidden')
-    jQuery(event.target).closest('.question-each').find('.add-question-comment').removeClass('hidden')
+    @question_comment_remove_hidden('.question-comment-table')
+    @question_comment_remove_hidden('.add-question-comment')
     hide_comment_dom = @hide_comment()
     jQuery(event.target).after(hide_comment_dom)
     jQuery(event.target).addClass('hidden')
     @$elm.on 'click','.hide-comment',(evt)=>
-      jQuery(event.target).closest('.question-each').find('.question-comment-table').addClass('hidden')
-      jQuery(event.target).closest('.question-each').find('.add-question-comment').addClass('hidden')
-      jQuery(event.target).closest('.question-each').find('.question-comment-count').removeClass('hidden')
+      @question_comment_add_hidden('.question-comment-table')
+      @question_comment_add_hidden('.add-question-comment')
+      @question_comment_remove_hidden('.question-comment-count')
       jQuery(event.target).remove()
+
+  answer_comment_remove_hidden: (classname)->
+    jQuery(event.target).closest('.answer-each').find(classname).removeClass('hidden')
+
+  answer_comment_add_hidden: (classname)->
+    jQuery(event.target).closest('.answer-each').find(classname).addClass('hidden')
   
   answer_comment_view: ()->
-    jQuery(event.target).closest('.answer-each').find('.answer-comment-table').removeClass('hidden')
-    jQuery(event.target).closest('.answer-each').find('.add-answer-comment').removeClass('hidden')
+    @answer_comment_remove_hidden('.answer-comment-table')
+    @answer_comment_remove_hidden('.add-answer-comment')
     hide_comment_dom = @hide_comment()
     jQuery(event.target).after(hide_comment_dom)
     jQuery(event.target).addClass('hidden')
     @$elm.on 'click','.hide-comment',(evt)=>
-      jQuery(event.target).closest('.answer-each').find('.answer-comment-table').addClass('hidden')
-      jQuery(event.target).closest('.answer-each').find('.add-answer-comment').addClass('hidden')
-      jQuery(event.target).closest('.answer-each').find('.answer-comment-count').removeClass('hidden')
+      @answer_comment_add_hidden('.answer-comment-table')
+      @answer_comment_add_hidden('.add-answer-comment')
+      @answer_comment_remove_hidden('.answer-comment-count')
       jQuery(event.target).remove()
 
   get_answer_id: ()->
@@ -190,7 +202,7 @@ class AnswerPage extends Function
         jQuery(event.target).closest('div').after(dom)
         @delete_input_and_buttons()
 
-      @$elm.on 'click','.answer-update .submit',(evt)=>
+      @$elm.on 'click','.answer-update-buttons .submit',(evt)=>
         id = @delete_blank(answer_id)
         update_content = @comment_get_input_value()
         url = "answers/#{id}"
