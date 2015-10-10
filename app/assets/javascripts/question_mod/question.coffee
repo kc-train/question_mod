@@ -8,8 +8,8 @@ class Function
   delete_blank: (str)->
     str.replace(/(^\s+)|(\s+$)/g,"");
 
-  content_text_area: (answer_content)->
-    content_text_area = "<div>"+
+  content_text_area: (classname,answer_content)->
+    content_text_area = "<div class=" + classname + ">"+
         "<input type='text' name='textfield' class='textarea' value=" + answer_content + ">" +
         "<button class='submit btn btn-defualt'> 提交 </span>"+
         "<button class='cancel btn btn-defualt'>取消</span>"+
@@ -18,11 +18,16 @@ class Function
   hide_comment: ->
     hide_comment = "<a class='hide-comment'>收起评论</a>"
 
-  add_buttons: ->
-    add_buttons = "<div>" +
+  add_buttons: (classname)->
+    dom = "<div class=" + classname + ">" +
         "<span class='cancel'>取消</span>"+
         "<button class='submit  btn btn-defualt'>评论</span>"+
         "</div>"
+    jQuery(event.target).after(dom)
+
+  add_input_and_buttons: (classname)->
+    content_text_area = @content_text_area(classname,"")
+    jQuery(event.target).closest('td').append(content_text_area)
 
   question_jQuery_ajax: (uri,request_type,contents,success_fuction)->
     jQuery.ajax
@@ -83,6 +88,9 @@ class Function
   delete_comment: ()->
     jQuery(event.target).closest('td').remove()
 
+  delete_input_and_buttons: ()->
+    jQuery(event.target).closest('div').remove()
+
   delete_jQuery_ajax: (uri)->
     jQuery.ajax
       url: uri,
@@ -100,12 +108,12 @@ class Function
   view_new_question_comment: (content,current_user)->
     new_comment = @new_comment(content,current_user)
     jQuery(event.target).closest('.question-each').find('.question-comment-table').find('.table-striped').append(new_comment)
-    jQuery(event.target).closest('div').remove()
+    @delete_input_and_buttons()
 
   view_new_answer_comment: (content,current_user)->
     new_comment = @new_comment(content,current_user)
     jQuery(event.target).closest('.answer-each').find('.answer-comment-table').find('.table-striped').append(new_comment)
-    jQuery(event.target).closest('div').remove()
+    @delete_input_and_buttons()
 
   question_comment_view: ()->
     jQuery(event.target).closest('.question-each').find('.question-comment-table').removeClass('hidden')
@@ -171,17 +179,18 @@ class AnswerPage extends Function
     @$elm.on 'click', '.answer-update', (evt)=>
       str = jQuery(event.target).closest('.answer-content').find('.content').text()
       answer_content = @delete_blank(str)
-      content_text_area = @content_text_area(answer_content)
+      classname = "answer-update-buttons"
+      content_text_area = @content_text_area(classname,answer_content)
       dom = jQuery(event.target).closest('.answer-content').clone()
       jQuery(event.target).closest('.answer-content').before(content_text_area)
       answer_id = jQuery(event.target).closest('.answer-content').find('.answer-id').text()
       jQuery(event.target).closest('.answer-content').remove()
 
-      @$elm.on 'click', '.cancel', (evt)=>
+      @$elm.on 'click', '.answer-update-buttons .cancel', (evt)=>
         jQuery(event.target).closest('div').after(dom)
-        jQuery(event.target).closest('div').remove()
+        @delete_input_and_buttons()
 
-      @$elm.on 'click','.submit',(evt)=>
+      @$elm.on 'click','.answer-update .submit',(evt)=>
         id = @delete_blank(answer_id)
         update_content = @comment_get_input_value()
         url = "answers/#{id}"
@@ -191,13 +200,13 @@ class AnswerPage extends Function
       @question_comment_view()
 
     @$elm.on 'click','.question-comment-content-area',(evt)=>
-      dom = @add_buttons()
-      jQuery(event.target).after(dom)
+      classname = "question-comment-buttons"
+      @add_buttons(classname)
 
-      @$elm.on 'click','.cancel',(evt)=>
-        jQuery(event.target).closest('div').remove()
+      @$elm.on 'click','.question-comment-buttons .cancel',(evt)=>
+        @delete_input_and_buttons()
 
-      @$elm.on 'click','.submit',(evt)=>
+      @$elm.on 'click','.question-comment-buttons .submit',(evt)=>
         content = @question_get_input_value()
         current_user = @question_get_current_user()
         url = "question_comments"
@@ -208,13 +217,13 @@ class AnswerPage extends Function
 
     @$elm.on 'click','.answer-comment-content-area',(evt)=>
       answer_id = @get_answer_id()
-      dom = @add_buttons()
-      jQuery(event.target).after(dom)
+      classname = "answer-comment-buttons"
+      @add_buttons(classname)
 
-      @$elm.on 'click','.cancel',(evt)=>
-        jQuery(event.target).closest('div').remove()
+      @$elm.on 'click','.answer-comment-buttons .cancel',(evt)=>
+        @delete_input_and_buttons()
 
-      @$elm.on 'click','.submit',(evt)=>
+      @$elm.on 'click','.answer-comment-buttons .submit',(evt)=>
         content = @answer_get_input_value()
         current_user = @answer_get_current_user()
         url = "answers/#{answer_id}/answer_comments"
@@ -222,13 +231,13 @@ class AnswerPage extends Function
 
     @$elm.on 'click','.question-comment-response',(evt)=>
       id = @get_question_comment_id()
-      content_text_area = @content_text_area("")
-      jQuery(event.target).closest('td').append(content_text_area)
+      classname = "question-comment-response-buttons"
+      @add_input_and_buttons(classname)
 
-      @$elm.on 'click', '.cancel', (evt)=>
-        jQuery(event.target).closest('div').remove()
+      @$elm.on 'click', '.question-comment-response-buttons .cancel', (evt)=>
+        @delete_input_and_buttons()
 
-      @$elm.on 'click','.submit',(evt)=>
+      @$elm.on 'click','.question-comment-response-buttons .submit',(evt)=>
         content = @comment_get_input_value()
         current_user = @question_get_current_user()
         url = "question_comments"
@@ -242,13 +251,13 @@ class AnswerPage extends Function
     @$elm.on 'click','.answer-comment-response',(evt)=>
       id = @get_answer_comment_id()
       answer_id = @get_answer_id()
-      content_text_area = @content_text_area("")
-      jQuery(event.target).closest('td').append(content_text_area)
+      classname = "answer-comment-response-buttons"
+      @add_input_and_buttons(classname)
 
-      @$elm.on 'click', '.cancel', (evt)=>
-        jQuery(event.target).closest('div').remove()
+      @$elm.on 'click', '.answer-comment-response-buttons .cancel', (evt)=>
+        @delete_input_and_buttons()
 
-      @$elm.on 'click','.submit',(evt)=>
+      @$elm.on 'click','.answer-comment-response-buttons .submit',(evt)=>
         content = @comment_get_input_value()
         current_user = @answer_get_current_user()
         url = "answers/#{answer_id}/answer_comments"
@@ -269,13 +278,13 @@ class QuestionPage extends Function
       @question_comment_view()
 
     @$elm.on 'click','.question-comment-content-area',(evt)=>
-      dom = @add_buttons()
-      jQuery(event.target).after(dom)
+      classname = "question-comment-buttons"
+      @add_buttons(classname)
 
-      @$elm.on 'click','.cancel',(evt)=>
-        jQuery(event.target).closest('div').remove()
+      @$elm.on 'click','.question-comment-buttons .cancel',(evt)=>
+        @delete_input_and_buttons()
 
-      @$elm.on 'click','.submit',(evt)=>
+      @$elm.on 'click','.question-comment-buttons .submit',(evt)=>
         current_user = @question_get_current_user()
         content = @question_get_input_value()
         question_id = @get_question_id()
@@ -284,13 +293,13 @@ class QuestionPage extends Function
 
     @$elm.on 'click','.question-comment-response',(evt)=>
       id = @get_question_comment_id()
-      content_text_area = @content_text_area("")
-      jQuery(event.target).closest('td').append(content_text_area)
+      classname = "question-comment-response-buttons"
+      @add_input_and_buttons(classname)
 
-      @$elm.on 'click', '.cancel', (evt)=>
-        jQuery(event.target).closest('div').remove()
+      @$elm.on 'click', '.question-comment-response-buttons .cancel', (evt)=>
+        @delete_input_and_buttons()
 
-      @$elm.on 'click','.submit',(evt)=>
+      @$elm.on 'click','.question-comment-response-buttons .submit',(evt)=>
         content = @comment_get_input_value()
         question_id = @get_question_id()
         current_user = @question_get_current_user()

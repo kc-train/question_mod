@@ -62,7 +62,6 @@
                       - if question_comment.creator == current_user 
                         %a.delete-question-comment
                           = '删除'
-                        / = link_to '删除', "/questions/#{question.id}/question_comments/#{question_comment.id}", :method => :delete
           .add-question-comment.hidden
             .current-user.hidden
               = current_user.name
