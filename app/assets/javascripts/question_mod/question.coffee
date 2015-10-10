@@ -20,10 +20,11 @@ class Function
 
   add_buttons: (classname)->
     dom = "<div class=" + classname + ">" +
-        "<span class='cancel'>取消</span>"+
+        "<span class='a-cancel'>取消</span>"+
         "<button class='submit  btn btn-defualt'>评论</span>"+
         "</div>"
-    jQuery(event.target).after(dom)
+    if jQuery('.a-cancel').length == 0
+      jQuery(event.target).after(dom)
 
   add_input_and_buttons: (classname)->
     content_text_area = @content_text_area(classname,"")
@@ -215,7 +216,7 @@ class AnswerPage extends Function
       classname = "question-comment-buttons"
       @add_buttons(classname)
 
-      @$elm.on 'click','.question-comment-buttons .cancel',(evt)=>
+      @$elm.on 'click','.question-comment-buttons .a-cancel',(evt)=>
         @delete_input_and_buttons()
 
       @$elm.on 'click','.question-comment-buttons .submit',(evt)=>
@@ -232,7 +233,7 @@ class AnswerPage extends Function
       classname = "answer-comment-buttons"
       @add_buttons(classname)
 
-      @$elm.on 'click','.answer-comment-buttons .cancel',(evt)=>
+      @$elm.on 'click','.answer-comment-buttons .a-cancel',(evt)=>
         @delete_input_and_buttons()
 
       @$elm.on 'click','.answer-comment-buttons .submit',(evt)=>
@@ -293,7 +294,7 @@ class QuestionPage extends Function
       classname = "question-comment-buttons"
       @add_buttons(classname)
 
-      @$elm.on 'click','.question-comment-buttons .cancel',(evt)=>
+      @$elm.on 'click','.question-comment-buttons .a-cancel',(evt)=>
         @delete_input_and_buttons()
 
       @$elm.on 'click','.question-comment-buttons .submit',(evt)=>
