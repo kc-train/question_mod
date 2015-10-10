@@ -34,7 +34,9 @@
                       %a.question-comment-response
                         = '回复'
                       - if question_comment.creator == current_user
-                        = link_to '删除', "question_comments/#{question_comment.id}", :method => :delete
+                        %a.delete-question-comment
+                          = '删除'
+                        / = link_to '删除', "question_comments/#{question_comment.id}", :method => :delete
           .add-question-comment.hidden
             .current-user.hidden
               = current_user.name
@@ -108,7 +110,9 @@
                           %a.answer-comment-response
                             = '回复'
                           - if answer_comment.creator == current_user
-                            = link_to '删除', "answers/#{answer.id}/answer_comments/#{answer_comment.id}", :method => :delete
+                            %a.delete-answer-comment
+                              = '删除'
+                            / = link_to '删除', "answers/#{answer.id}/answer_comments/#{answer_comment.id}", :method => :delete
               .add-answer-comment.hidden
                 .current-user.hidden
                   = current_user.name

@@ -80,6 +80,15 @@ class Function
       },
       success: success_fuction
 
+  delete_comment: ()->
+    jQuery(event.target).closest('td').remove()
+
+  delete_jQuery_ajax: (uri)->
+    jQuery.ajax
+      url: uri,
+      type: 'DELETE',
+      success: @delete_comment()
+
   new_comment: (content,current_user)->
     new_comment = "<tr>" +
       "<td>" +
@@ -224,6 +233,11 @@ class AnswerPage extends Function
         current_user = @question_get_current_user()
         url = "question_comments"
         @comment_question_comment_jQuery_ajax(url,'POST',content,id,@view_new_question_comment(content,current_user))
+
+    @$elm.on 'click','.delete-question-comment',(evt)=>
+      id = @get_question_comment_id()
+      url = "question_comments/#{id}"
+      @delete_jQuery_ajax(url)
   
     @$elm.on 'click','.answer-comment-response',(evt)=>
       id = @get_answer_comment_id()
@@ -239,7 +253,12 @@ class AnswerPage extends Function
         current_user = @answer_get_current_user()
         url = "answers/#{answer_id}/answer_comments"
         @comment_answer_comment_jQuery_ajax(url,'POST',content,id,@view_new_answer_comment(content,current_user))
-
+    
+    @$elm.on 'click','.delete-answer-comment',(evt)=>
+      id = @get_answer_comment_id()
+      answer_id = @get_answer_id()
+      url = "answers/#{answer_id}/answer_comments/#{id}"
+      @delete_jQuery_ajax(url)
 
 class QuestionPage extends Function
   constructor: (@$elm)->
@@ -277,6 +296,13 @@ class QuestionPage extends Function
         current_user = @question_get_current_user()
         url = "questions/#{question_id}/question_comments"
         @comment_question_comment_jQuery_ajax(url,'POST',content,id,@view_new_question_comment(content,current_user))
+
+    @$elm.on 'click','.delete-question-comment',(evt)=>
+      id = @get_question_comment_id()
+      question_id = @get_question_id()
+      url = "questions/#{question_id}/question_comments/#{id}"
+      @delete_jQuery_ajax(url)
+
 
 
 
