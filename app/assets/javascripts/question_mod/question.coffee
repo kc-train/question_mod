@@ -15,8 +15,8 @@ class Function
         "<button class='cancel btn btn-defualt'>取消</span>"+
         "</div>"
 
-  hide_comment: ->
-    hide_comment = "<a class='hide-comment'>收起评论</a>"
+  hide_comment: (classname)->
+    hide_comment = "<a class=" + classname + ">收起评论</a>"
 
   add_buttons: (classname)->
     dom = "<div class=" + classname + ">" +
@@ -124,10 +124,10 @@ class Function
   question_comment_view: ()->
     @question_comment_remove_hidden('.question-comment-table')
     @question_comment_remove_hidden('.add-question-comment')
-    hide_comment_dom = @hide_comment()
+    hide_comment_dom = @hide_comment('hide-question-comment')
     jQuery(event.target).after(hide_comment_dom)
     jQuery(event.target).addClass('hidden')
-    @$elm.on 'click','.hide-comment',(evt)=>
+    @$elm.on 'click','.hide-question-comment',(evt)=>
       @question_comment_add_hidden('.question-comment-table')
       @question_comment_add_hidden('.add-question-comment')
       @question_comment_remove_hidden('.question-comment-count')
@@ -142,10 +142,10 @@ class Function
   answer_comment_view: ()->
     @answer_comment_remove_hidden('.answer-comment-table')
     @answer_comment_remove_hidden('.add-answer-comment')
-    hide_comment_dom = @hide_comment()
+    hide_comment_dom = @hide_comment('hide-answer-comment')
     jQuery(event.target).after(hide_comment_dom)
     jQuery(event.target).addClass('hidden')
-    @$elm.on 'click','.hide-comment',(evt)=>
+    @$elm.on 'click','.hide-answer-comment',(evt)=>
       @answer_comment_add_hidden('.answer-comment-table')
       @answer_comment_add_hidden('.add-answer-comment')
       @answer_comment_remove_hidden('.answer-comment-count')
