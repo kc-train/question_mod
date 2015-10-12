@@ -1,16 +1,14 @@
 QuestionMod::Engine.routes.draw do
   root 'home#index'
   resources :questions do
-    resources :question_comments 
-    resources :question_votes do
-      collection do
-        get 'agree'
-        get 'against'
-      end
+    member do
+      put :vote_up
+      put :vote_down
     end
+    resources :question_comments, :path => :comments
 
     resources :answers do
-      resources :answer_comments 
+      resources :answer_comments, :path => :comments
       resources :answer_votes do
         collection do
           get 'agree'
@@ -18,5 +16,5 @@ QuestionMod::Engine.routes.draw do
         end
       end
     end
-  end 
+  end
 end

@@ -37,7 +37,7 @@ RSpec.describe QuestionMod::QuestionVote, type: :model do
   it "测试用户2对用户1创建的问题1投的赞同票取消成功" do
     expect{
       expect{
-        @question1.vote_by(@user2, "") 
+        @question1.vote_by(@user2, "")
       }.to change{QuestionMod::Question.find(@question1.id).vote_sum}.by(-1)
     }.to change{QuestionMod::QuestionVote.count}.by(-1)
   end
@@ -45,7 +45,7 @@ RSpec.describe QuestionMod::QuestionVote, type: :model do
   it "测试用户4对用户1创建的问题1投的反对票取消成功" do
     expect{
       expect{
-        @question1.vote_by(@user4, "")  
+        @question1.vote_by(@user4, "")
       }.to change{QuestionMod::Question.find(@question1.id).vote_sum}.by(1)
     }.to change{QuestionMod::QuestionVote.count}.by(-1)
   end
@@ -78,7 +78,7 @@ RSpec.describe QuestionMod::QuestionVote, type: :model do
     @question1.vote_by(@user2, QuestionMod::QuestionVote::KIND_DOWN)
     @question1.vote_by(@user3, QuestionMod::QuestionVote::KIND_UP)
     @question1.vote_by(@user4,"")
-    @question1.vote_by(@user5, QuestionMod::QuestionVote::KIND_UP)    
+    @question1.vote_by(@user5, QuestionMod::QuestionVote::KIND_UP)
     @question1.vote_by(@user6, QuestionMod::QuestionVote::KIND_DOWN)
     @question2.vote_by(@user1, QuestionMod::QuestionVote::KIND_UP)
     @question2.vote_by(@user3, QuestionMod::QuestionVote::KIND_UP)
@@ -90,7 +90,7 @@ RSpec.describe QuestionMod::QuestionVote, type: :model do
     @question4.vote_by(@user6, QuestionMod::QuestionVote::KIND_DOWN)
     @question5.vote_by(@user1, QuestionMod::QuestionVote::KIND_DOWN)
     @question5.vote_by(@user2, QuestionMod::QuestionVote::KIND_DOWN)
-    @questions = QuestionMod::Question.order(vote_sum: :desc).all
+    @questions = QuestionMod::Question.all
 
     arr = @questions.map do |question|
       question.title

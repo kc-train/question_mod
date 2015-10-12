@@ -1,0 +1,81 @@
+.col-md-8
+  .page-question-show
+    .question
+      .title= @question.title
+
+      .create-info
+        .creator= @question.creator.name
+        .created-time= human_time_show @question.created_at
+
+      .desc
+        .vote{:data => {:"question-id" => @question.id.to_s}}
+          - if @question.creator != current_user
+            %a.vote-up.glyphicon.glyphicon-menu-up{:href => "javascript:;", :class => @question.is_vote_up_of(current_user) ? "pressed" : ""}
+          - else
+            .vote-up.glyphicon.glyphicon-menu-up
+
+          .vote-sum= @question.vote_sum
+
+          - if @question.creator != current_user
+            %a.vote-down.glyphicon.glyphicon-menu-down{:href => "javascript:;", :class => @question.is_vote_down_of(current_user) ? "pressed" : ""}
+          - else
+            .vote-down.glyphicon.glyphicon-menu-down
+
+        .desc-content
+          .content= @question.content
+          = render :partial => "question_comments", :locals => {:question => @question}
+
+    .answer-title= "#{@question.answers.count} 个回答"
+
+    %ul.answers
+      - @question.answers.each do |answer|
+        %li.answer{:data => {:"answer-id" => answer.id.to_s}}
+          .vote
+            - if answer.creator != current_user
+              %a.vote-up.glyphicon.glyphicon-menu-up{:href => "javascript:;"}
+            - else
+              .vote-up.glyphicon.glyphicon-menu-up
+
+            .vote-sum= answer.vote_sum
+
+            - if answer.creator != current_user
+              %a.vote-down.glyphicon.glyphicon-menu-down{:href => "javascript:;"}
+            - else
+              .vote-down.glyphicon.glyphicon-menu-down
+
+          .desc
+            .create-info
+              .creator= answer.creator.name
+              .created-time= human_time_show answer.created_at
+
+            .content= answer.content
+
+            .desc-action
+              %a.edit{:href => "javascript:;"} 修改
+
+              %a.show-comment{:href => "javascript:;"}= "#{answer.comments.count} 条评论"
+              %ul.comments.hidden
+                - answer.comments.each do |comment|
+                  %li.comment{:data => {:"comment-id" => comment.id.to_s}}
+                    .creator
+                      - if comment.reply_comment.blank?
+                        = comment.creator.name
+                      - else
+                        = comment.creator.name
+                        回复
+                        = comment.reply_comment.creator.name
+                    .content= comment.content
+                    .created-time= human_time_str comment.created_at
+
+                    %a.reply{:href => "javascript:;"} 回复
+                    - if comment.creator == current_user
+                      %a.delete{:href => "javascript:;"} 删除
+
+                    .comment-form
+                      %textarea
+                      %a.btn-defualt{:href => "javascript:;"} 提交
+
+      - if @question.creator != current_user && @question.answers.where(:creator_id => current_user.id).count == 0
+        = simple_form_for [@question,QuestionMod::Answer.new] do |f|
+          = f.input 'content', as: :text, input_html: { class: 'form-control' }
+          %button.btn.btn-defualt 提交

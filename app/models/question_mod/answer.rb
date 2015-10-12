@@ -22,6 +22,6 @@ module QuestionMod
     # question 不能为空
     belongs_to :question,       :class_name => 'QuestionMod::Question'
     has_many   :answer_votes,   :class_name => 'QuestionMod::AnswerVote'
-    has_many   :answer_comments,:class_name => 'QuestionMod::AnswerComment'
+    has_many   :comments,:class_name => 'QuestionMod::Comment', :as => :targetable
   end
 end

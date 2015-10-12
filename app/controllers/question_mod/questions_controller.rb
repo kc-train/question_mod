@@ -1,7 +1,7 @@
 module QuestionMod
   class QuestionsController < QuestionMod::ApplicationController
     def index
-      @questions = QuestionMod::Question.order(vote_sum: :desc).all
+      @questions = QuestionMod::Question.all
     end
 
     def new
@@ -18,10 +18,32 @@ module QuestionMod
       end
     end
 
-    def method_name
-      
+    def show
+      @question = QuestionMod::Question.find(params[:id])
     end
 
+    def method_name
+    end
+
+    def vote_up
+      @question = QuestionMod::Question.find(params[:id])
+      @question.vote_up_by(current_user)
+      @question.reload
+      render :json => {
+        :state    => @question.vote_state_of(current_user),
+        :vote_sum => @question.vote_sum
+      }
+    end
+
+    def vote_down
+      @question = QuestionMod::Question.find(params[:id])
+      @question.vote_down_by(current_user)
+      @question.reload
+      render :json => {
+        :state    => @question.vote_state_of(current_user),
+        :vote_sum => @question.vote_sum
+      }
+    end
 
     private
       def question_params

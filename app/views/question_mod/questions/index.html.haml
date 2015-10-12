@@ -1,70 +1,16 @@
-.page-questions-index
-  %button.btn.btn-defualt.add-question
-    = link_to '提问', "questions/new", :method => :get
-  %ul.questions
-    - @questions.each do |question|
-      .question-each
-        %table.table.table-striped
-          %tr.row
-            %td.col-md-1
-              .question-vote
-                - if question.creator != current_user
-                  .question-agree-vote
-                    %a.glyphicon.glyphicon-menu-up{:href => "questions/#{question.id}/question_votes/agree"}
-                    = question.question_votes.where(:kind => :up).count
-                  .question-against-vote
-                    %a.glyphicon.glyphicon-menu-down{:href => "questions/#{question.id}/question_votes/against"}
-                    = question.question_votes.where(:kind => :down).count
-                - else
-                  .question-agree-vote
-                    赞同
-                    = question.question_votes.where(:kind => :up).count
-                  .question-against-vote
-                    反对
-                    = question.question_votes.where(:kind => :down).count
-            %td.col-md-1
-              = question.creator.name
-            %td.col-md-10
-              .question-title
-                %a.question-title{:href => "/questions/#{question.id}/answers"}
-                  = question.title
-        %tr
-          %td
-            .question-content    
-              %ul.question-content
-                = question.content
-        %tr
-          %td
-            %a.question-comment-count
-              = question.question_comments.count
-              条评论
-          .question-comment-table.hidden
-            %table.table.table-striped
-              - question.question_comments.each do |question_comment|
-                %tr
-                  %td
-                    .question-comment-id.hidden
-                      = question_comment.id
-                    .question-comment-creator
-                      - if question_comment.question_comment_id != nil
-                        = question_comment.creator.name
-                        回复  
-                        = question_comment.question_comment.creator.name
-                      -else
-                        = question_comment.creator.name
-                    .question-comment-content
-                      = question_comment.content
-                    .question-comment-created-time
-                      创建于
-                      = question_comment.created_at
-                      %a.question-comment-response
-                        = '回复'
-                      - if question_comment.creator == current_user 
-                        %a.delete-question-comment
-                          = '删除'
-          .add-question-comment.hidden
-            .current-user.hidden
-              = current_user.name
-            .question-id.hidden
-              = question.id
-            %input.question-comment-content-area
+.col-md-8
+  .page-questions-index
+    = link_to '提问', "questions/new", :method => :get, :class => "btn btn-default add-question"
+    %ul.questions
+      - @questions.each do |question|
+        %li.question
+          .vote
+            .count= question.vote_sum
+            .text 投票
+          .answer
+            .count= question.answers.count
+            .text 回答
+          .content
+            .creator= question.creator.name
+            .created-time= human_time_show question.created_at
+            %a.title{:href => "/questions/#{question.id}"}= question.title

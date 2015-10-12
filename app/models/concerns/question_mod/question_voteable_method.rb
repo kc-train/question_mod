@@ -2,24 +2,33 @@ module QuestionMod
   module QuestionVoteableMethod
     extend ActiveSupport::Concern
 
-    # kind 可以是如下三个常量之一
-    # QuestionVote::KIND_UP
-    # QuestionVote::KIND_DOWN
-    # nil
-    def vote_by(user, kind)
-      kind_not_up_and_down = (kind != QuestionVote::KIND_UP && kind != QuestionVote::KIND_DOWN)
+    # 有三种起始状态
+    # 1 用户没有任何对应 vote
+    # 2 用户已经是 vote_up
+    # 3 用户是 vote_down
+    def vote_up_by(user)
+      _vote_by(user, QuestionVote::KIND_UP, QuestionVote::KIND_DOWN)
+    end
 
-      if kind.blank? || kind_not_up_and_down
-        question_votes.where(:creator => user).destroy_all
-        return
-      end
+    # 有三种起始状态
+    # 1 用户没有任何对应 vote
+    # 2 用户已经是 vote_up
+    # 3 用户是 vote_down
+    def vote_down_by(user)
+      _vote_by(user, QuestionVote::KIND_DOWN, QuestionVote::KIND_UP)
+    end
 
+    def _vote_by(user, kind1, kind2)
       current_kind = vote_state_of(user)
-      if current_kind.blank?
-        question_votes.create(:kind => kind, :creator => user)
-      else
+
+      case current_kind
+      when nil
+        question_votes.create(:kind => kind1, :creator => user)
+      when kind1
+        question_votes.where(:creator => user).destroy_all
+      when kind2
         vote = question_votes.where(:creator => user).first
-        vote.update_attribute(:kind, kind)
+        vote.update_attribute(:kind, kind1)
       end
     end
 
@@ -33,6 +42,14 @@ module QuestionMod
       else
         return question_votes.where(:creator => user).all.first.kind
       end
+    end
+
+    def is_vote_up_of(user)
+      vote_state_of(user) == QuestionVote::KIND_UP
+    end
+
+    def is_vote_down_of(user)
+      vote_state_of(user) == QuestionVote::KIND_DOWN
     end
   end
 end

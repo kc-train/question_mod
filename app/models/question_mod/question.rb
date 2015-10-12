@@ -4,6 +4,8 @@ module QuestionMod
     include Mongoid::Timestamps
     include QuestionMod::QuestionVoteableMethod
 
+    default_scope ->{ order(vote_sum: :desc) }
+
     # title content 不能为空
     field :title,   :type => String
     field :content, :type => String
@@ -12,13 +14,14 @@ module QuestionMod
     # down -1
     field :vote_sum, :type => Integer, :default => 0
 
-    validates :title, :presence => true, :uniqueness => true
+    validates :title, :presence => true
     validates :content, :presence => true
     validates :creator, :presence => true
     # creator 不能为空
     belongs_to :creator,         :class_name => 'User'
-    has_many   :answers,         :class_name => 'QuestionMod::Answer'
     has_many   :question_votes,  :class_name => 'QuestionMod::QuestionVote'
-    has_many   :question_comments,:class_name => 'QuestionMod::QuestionComment'
+    has_many   :comments, :class_name => 'QuestionMod::Comment', :as => :targetable
+
+    has_many :answers, :class_name => 'QuestionMod::Answer', :order => :vote_sum.desc
   end
 end

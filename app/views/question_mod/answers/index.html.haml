@@ -9,12 +9,12 @@
           .question-content
             = @question.content
           %a.question-comment-count{:href => '#'}
-            = @question.question_comments.count
+            = @question.comments.count
             条评论
-          
+
           .question-comment-table.hidden
             %table.table.table-striped
-              - @question.question_comments.each do |question_comment|
+              - @question.comments.each do |question_comment|
                 %tr
                   %td
                     .question-comment-id.hidden
@@ -22,7 +22,7 @@
                     .question-comment-creator
                       - if question_comment.question_comment_id != nil
                         = question_comment.creator.name
-                        回复  
+                        回复
                         = question_comment.question_comment.creator.name
                       -else
                         = question_comment.creator.name
@@ -47,7 +47,7 @@
       %td.col-md-1
       %td.col-md-11
         .answer-count
-          = @question.answers.count 
+          = @question.answers.count
           个回答
   %ul.question-answer
     - @question.answers.order(vote_sum: :desc).each do |answer|
@@ -70,7 +70,7 @@
                   反对
                   = answer.answer_votes.where(:kind => :down).count
             %td.col-md-11
-              = answer.creator.name 
+              = answer.creator.name
               .answer-content
                 %span.hidden.answer-id
                   = answer.id
@@ -97,7 +97,7 @@
                         .answer-comment-creator
                           - if answer_comment.answer_comment_id != nil
                             = answer_comment.creator.name
-                            回复  
+                            回复
                             = answer_comment.answer_comment.creator.name
                           -else
                             = answer_comment.creator.name
@@ -121,5 +121,3 @@
       = simple_form_for [@question,@answer] do |f|
         = f.input 'content', as: :text, input_html: { class: 'form-control' }
         %button.btn.btn-defualt 提交
-      
-  

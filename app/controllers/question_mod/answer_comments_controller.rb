@@ -3,15 +3,15 @@ module QuestionMod
     before_action :find_answer
     before_action :find_question
     def index
-      
+
     end
-    
+
     def new
-      @answer_comment = @answer.answer_comments.new
+      @answer_comment = @answer.comments.new
     end
 
     def create
-      @answer_comment = @answer.answer_comments.create(answer_comment_params)
+      @answer_comment = @answer.comments.create(answer_comment_params)
       @answer_comment.creator = current_user
       if @answer_comment.save
         redirect_to "/questions/#{@question_id}/answers"
@@ -19,7 +19,7 @@ module QuestionMod
     end
 
     def destroy
-      @answer_comment = QuestionMod::AnswerComment.find(params[:id])
+      @answer_comment = QuestionMod::Comment.find(params[:id])
       @answer_comment.destroy
       redirect_to "/questions/#{@question_id}/answers"
     end
@@ -30,7 +30,7 @@ module QuestionMod
         @question_id = params[:question_id]
       end
 
-      def answer_comment_params  
+      def answer_comment_params
         params.require(:answer_comment).permit(:content, :answer_comment_id)
       end
 
