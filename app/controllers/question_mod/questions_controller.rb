@@ -22,9 +22,6 @@ module QuestionMod
       @question = QuestionMod::Question.find(params[:id])
     end
 
-    def method_name
-    end
-
     def vote_up
       @question = QuestionMod::Question.find(params[:id])
       @question.vote_up_by(current_user)

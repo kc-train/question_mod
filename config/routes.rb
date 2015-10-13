@@ -8,13 +8,11 @@ QuestionMod::Engine.routes.draw do
     resources :question_comments, :path => :comments
 
     resources :answers do
-      resources :answer_comments, :path => :comments
-      resources :answer_votes do
-        collection do
-          get 'agree'
-          get 'against'
-        end
+      member do
+        put :vote_up
+        put :vote_down
       end
+      resources :answer_comments, :path => :comments
     end
   end
 end

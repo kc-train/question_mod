@@ -29,8 +29,8 @@
 
     %ul.answers
       - @question.answers.each do |answer|
-        %li.answer{:data => {:"answer-id" => answer.id.to_s}}
-          .vote
+        %li.answer
+          .vote{:data => {:"answer-id" => answer.id.to_s}}
             - if answer.creator != current_user
               %a.vote-up.glyphicon.glyphicon-menu-up{:href => "javascript:;"}
             - else
