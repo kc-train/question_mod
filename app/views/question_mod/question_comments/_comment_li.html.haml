@@ -1,3 +1,4 @@
+
 %li.comment{:data => {:"comment-id" => comment.id.to_s}}
   .creator
     - if comment.reply_comment.blank?
@@ -12,3 +13,8 @@
   %a.reply{:href => "javascript:;"} 回复
   - if comment.creator == current_user
     %a.delete{:href => "javascript:;"} 删除
+
+  .comment-form.hidden{:data => {:"comment-id" => comment.id.to_s}}
+    %textarea.form-control
+    %a.add-comments.btn.btn-default{:href => "javascript:;"} 提交
+    %a.cancel.btn.btn-default{:href => "javascript:;"} 取消

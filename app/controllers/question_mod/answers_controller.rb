@@ -41,11 +41,8 @@ module QuestionMod
 
     def vote_down
       @answer = QuestionMod::Answer.find(params[:id])
-      p @answer.content
       @answer.vote_down_by(current_user)
-      p @answer.vote_sum
       @answer.reload
-      p @answer.vote_sum
       render :json => {
         :state    => @answer.vote_state_of(current_user),
         :vote_sum => @answer.vote_sum

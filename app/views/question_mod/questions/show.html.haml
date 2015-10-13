@@ -52,28 +52,8 @@
 
             .desc-action
               %a.edit{:href => "javascript:;"} 修改
+              = render :partial => "answer_comments", :locals => {:answer => answer}
 
-              %a.show-comment{:href => "javascript:;"}= "#{answer.comments.count} 条评论"
-              %ul.comments.hidden
-                - answer.comments.each do |comment|
-                  %li.comment{:data => {:"comment-id" => comment.id.to_s}}
-                    .creator
-                      - if comment.reply_comment.blank?
-                        = comment.creator.name
-                      - else
-                        = comment.creator.name
-                        回复
-                        = comment.reply_comment.creator.name
-                    .content= comment.content
-                    .created-time= human_time_str comment.created_at
-
-                    %a.reply{:href => "javascript:;"} 回复
-                    - if comment.creator == current_user
-                      %a.delete{:href => "javascript:;"} 删除
-
-                    .comment-form
-                      %textarea
-                      %a.btn-defualt{:href => "javascript:;"} 提交
 
       - if @question.creator != current_user && @question.answers.where(:creator_id => current_user.id).count == 0
         = simple_form_for [@question,QuestionMod::Answer.new] do |f|
