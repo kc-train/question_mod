@@ -23,14 +23,15 @@ module QuestionMod
     def update
       @answer = @question.answers.find(params[:id])
       @answer.update(answer_params)
-      if @answer.save
-        redirect_to "/questions/#{@question.id}/answers"
-      end
+       @answer.reload
+      render :json => {
+        :state    => @answer.vote_state_of(current_user),
+        :vote_sum => @answer.vote_sum
+      }
     end
 
     def vote_up
       @answer = QuestionMod::Answer.find(params[:id])
-      p @answer.content
       @answer.vote_up_by(current_user)
       @answer.reload
       render :json => {

@@ -49,6 +49,10 @@
               .created-time= human_time_show answer.created_at
 
             .content= answer.content
+            .update-form.hidden{:data => {:"answer-id" => answer.id.to_s}}
+              %textarea= answer.content
+              %a.update-answer.btn.btn-default{:href => "javascript:;"} 提交
+              %a.update-cancel.btn.btn-default{:href => "javascript:;"} 取消
 
             .desc-action
               %a.edit{:href => "javascript:;"} 修改
