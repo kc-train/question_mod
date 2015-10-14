@@ -1,8 +1,6 @@
 class AnswerComment
   constructor: (@$show_comment, @$comment_content)->
     @question_id = jQuery(".page-question-show .question .comment-content .form").data("question-id")
-    @answer_id = @$comment_content.find(".form").data("answer-id")
-    @comment_id = @$comment_content.find(".comment").data("comment-id")
     @bind_event()
 
   bind_event: ->
@@ -11,9 +9,10 @@ class AnswerComment
       $comment_content.toggleClass "hidden"
 
     @$comment_content.on "click", ".form a.btn.add-comments", =>
-
-      content = @$comment_content.find(".form textarea").val()
+      @answer_id = jQuery(event.target).closest(".form").data("answer-id")
+      content = jQuery(event.target).closest(".form").find("textarea").val()
       content = jQuery.trim(content)
+      $comments = jQuery(event.target).closest(".answer").find("ul.comments")
       if content == ""
         alert("做一个 textarea 闪动效果")
         return
@@ -25,7 +24,7 @@ class AnswerComment
           "comment[content]": content
         type: "html"
         success: (html)=>
-          @$comment_content.find("ul.comments").append(html)
+          $comments.append(html)
 
     @$comment_content.on "click", "ul.comments a.reply", =>
       jQuery(event.target).closest(".comment").find(".comment-form").toggleClass "hidden"
@@ -34,8 +33,10 @@ class AnswerComment
       jQuery(event.target).closest(".comment").find(".comment-form").toggleClass "hidden"
 
     @$comment_content.on "click", "ul.comments a.add-comments", =>
+      @answer_id = jQuery(event.target).closest(".answer").find(".vote").data("answer-id")
       $comment_form = jQuery(event.target).closest(".comment-form")
-      content = @$comment_content.find(".comment .comment-form textarea").val()
+      $comments = jQuery(event.target).closest(".answer").find("ul.comments")
+      content =jQuery(event.target).closest(".comment").find(".comment-form textarea").val()
       content = jQuery.trim(content)
       reply_comment_id = jQuery(event.target).closest(".comment-form").data("comment-id")
       if content == ""
@@ -51,9 +52,11 @@ class AnswerComment
         type: "html"
         success: (html)=>
           $comment_form.remove()
-          @$comment_content.find("ul.comments").append(html)
+          $comments.append(html)
 
     @$comment_content.on "click", "ul.comments a.delete", =>
+      @answer_id = jQuery(event.target).closest(".answer").find(".vote").data("answer-id")
+      @comment_id = jQuery(event.target).closest(".comment").data("comment-id")
       $comment_content = jQuery(event.target).closest(".comment")
       jQuery.ajax
         method: "DELETE"

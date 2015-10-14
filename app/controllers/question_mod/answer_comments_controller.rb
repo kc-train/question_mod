@@ -22,6 +22,7 @@ module QuestionMod
 
     def destroy
       comment = QuestionMod::Comment.find(params[:id])
+      comment.destroy
       if comment.destroy
         html = render_to_string :partial => "/question_mod/question_comments/comment_li", :locals => {:comment => comment}
         return render :text => html

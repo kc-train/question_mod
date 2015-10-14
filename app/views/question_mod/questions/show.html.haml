@@ -5,7 +5,7 @@
 
       .create-info
         .creator= @question.creator.name
-        .created-time= human_time_show @question.created_at
+        .created-time= human_time_show @question.created_at  
 
       .desc
         .vote{:data => {:"question-id" => @question.id.to_s}}
@@ -32,14 +32,14 @@
         %li.answer
           .vote{:data => {:"answer-id" => answer.id.to_s}}
             - if answer.creator != current_user
-              %a.vote-up.glyphicon.glyphicon-menu-up{:href => "javascript:;"}
+              %a.vote-up.glyphicon.glyphicon-menu-up{:href => "javascript:;", :class => answer.is_vote_up_of(current_user) ? "pressed" : ""}
             - else
               .vote-up.glyphicon.glyphicon-menu-up
 
             .vote-sum= answer.vote_sum
 
             - if answer.creator != current_user
-              %a.vote-down.glyphicon.glyphicon-menu-down{:href => "javascript:;"}
+              %a.vote-down.glyphicon.glyphicon-menu-down{:href => "javascript:;", :class => answer.is_vote_down_of(current_user) ? "pressed" : ""}
             - else
               .vote-down.glyphicon.glyphicon-menu-down
 
@@ -55,7 +55,8 @@
               %a.update-cancel.btn.btn-default{:href => "javascript:;"} 取消
 
             .desc-action
-              %a.edit{:href => "javascript:;"} 修改
+              - if answer.creator == current_user
+                %a.edit{:href => "javascript:;"} 修改
               = render :partial => "answer_comments", :locals => {:answer => answer}
 
 

@@ -2,7 +2,7 @@ module QuestionMod
   class AnswersController < QuestionMod::ApplicationController
     before_action :find_question
     def index
-      @answers = QuestionMod::Answer.order(vote_sum: :desc).all
+      @answers = QuestionMod::Answer.all
       @answer = @question.answers.new
     end
 
