@@ -1,8 +1,18 @@
 class Answer
   constructor: (@$answer)->
     @question_id = jQuery(".page-question-show .question .comment-content .form").data("question-id")
-    @answer_id = @$answer.find(".update-form").data("answer-id")
+    
     @bind_event()
+
+  backgroundColor_move: ->
+    jQuery(event.target).closest(".answer").find(".update-form textarea").animate({backgroundColor:"red"},200)
+    jQuery(event.target).closest(".answer").find(".update-form textarea").animate({backgroundColor:"white"},200)
+    jQuery(event.target).closest(".answer").find(".update-form textarea").animate({backgroundColor:"red"},200)
+    jQuery(event.target).closest(".answer").find(".update-form textarea").animate({backgroundColor:"white"},200)
+    jQuery(event.target).closest(".answer").find(".update-form textarea").animate({backgroundColor:"red"},200)
+    jQuery(event.target).closest(".answer").find(".update-form textarea").animate({backgroundColor:"white"},200)
+    jQuery(event.target).closest(".answer").find(".update-form textarea").animate({backgroundColor:"red"},200)
+    jQuery(event.target).closest(".answer").find(".update-form textarea").animate({backgroundColor:"white"},200)
 
   bind_event: =>
     @$answer.on "click", ".edit", =>
@@ -16,14 +26,14 @@ class Answer
       jQuery(event.target).closest(".answer").find(".update-form").toggleClass "hidden"
 
     @$answer.on "click", ".update-form .update-answer", =>
-      console.log @answer_id
-      content = @$answer.find(".update-form textarea").val()
+      @answer_id = jQuery(event.target).closest(".answer").find(".update-form").data("answer-id")
+      content = jQuery(event.target).closest(".answer").find(".update-form textarea").val()
       content = jQuery.trim(content)
       $content = jQuery(event.target).closest(".answer").find(".content")
       $eidt = jQuery(event.target).closest(".answer").find(".edit")
       $update_form = jQuery(event.target).closest(".answer").find(".update-form")
       if content == ""
-        alert("做一个 textarea 闪动效果")
+        @backgroundColor_move()
         return
 
       jQuery.ajax

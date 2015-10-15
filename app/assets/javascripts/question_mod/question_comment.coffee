@@ -1,8 +1,17 @@
 class QuestionComment
   constructor: (@$show_comment, @$comment_content)->
     @question_id = @$comment_content.find(".form").data("question-id")
-    @comment_id = @$comment_content.find(".comment").data("comment-id")
     @bind_event()
+
+  backgroundColor_move: (textarea,coler1,color2,speed)->
+    @$comment_content.find(textarea).animate({backgroundColor:color2},speed)
+    @$comment_content.find(textarea).animate({backgroundColor:coler1},speed)
+    @$comment_content.find(textarea).animate({backgroundColor:color2},speed)
+    @$comment_content.find(textarea).animate({backgroundColor:coler1},speed)
+    @$comment_content.find(textarea).animate({backgroundColor:color2},speed)
+    @$comment_content.find(textarea).animate({backgroundColor:coler1},speed)
+    @$comment_content.find(textarea).animate({backgroundColor:color2},speed)
+    @$comment_content.find(textarea).animate({backgroundColor:coler1},speed)
 
   bind_event: ->
     @$show_comment.on "click", =>
@@ -13,7 +22,7 @@ class QuestionComment
       content = @$comment_content.find(".form textarea").val()
       content = jQuery.trim(content)
       if content == ""
-        alert("做一个 textarea 闪动效果")
+        @backgroundColor_move(".form textarea","white","red",200)
         return
 
       jQuery.ajax
@@ -23,6 +32,7 @@ class QuestionComment
           "comment[content]": content
         type: "html"
         success: (html)=>
+          @$comment_content.find(".form textarea").val("")
           @$comment_content.find("ul.comments").append(html)
 
     @$comment_content.on "click", "ul.comments a.reply", =>
@@ -33,11 +43,11 @@ class QuestionComment
 
     @$comment_content.on "click", "ul.comments a.add-comments", =>
       $comment_form = jQuery(event.target).closest(".comment-form")
-      content = @$comment_content.find(".comment .comment-form textarea").val()
+      content = $comment_form.find("textarea").val()
       content = jQuery.trim(content)
       reply_comment_id = jQuery(event.target).closest(".comment-form").data("comment-id")
       if content == ""
-        alert("做一个 textarea 闪动效果")
+        @backgroundColor_move(".comment .comment-form textarea","white","red",200)
         return
 
       jQuery.ajax
@@ -53,6 +63,7 @@ class QuestionComment
 
 
     @$comment_content.on "click", "ul.comments a.delete", =>
+      @comment_id = jQuery(event.target).closest(".comment").data("comment-id")
       $comment_content = jQuery(event.target).closest(".comment")
       jQuery.ajax
         method: "DELETE"

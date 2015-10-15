@@ -27,7 +27,7 @@ module QuestionMod
 
     # def question_creator_can_not_create_answer
     #   if self.creator == self.question.creator
-    #     errors.add(:base,"question creator can not create answer for the question") 
+    #     errors.add(:base,"用户不能给自己的 question 增加 answer") 
     #   end 
     # end
   end
