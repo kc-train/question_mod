@@ -5,28 +5,22 @@ class AnswerVote
 
   bind_event: ->
     @$elm.on "click", "a.vote-up", (evt)=>
-      @answer_id = jQuery(event.target).closest(".vote").data "answer-id"
-      $up_btn = jQuery(event.target).closest(".vote").find "a.vote-up"
-      $down_btn = jQuery(event.target).closest(".vote").find "a.vote-down"
-      $vote_sum = jQuery(event.target).closest(".vote").find ".vote-sum"
-      jQuery.ajax
-        method: "PUT"
-        url: "/questions/#{@question_id}/answers/#{@answer_id}/vote_up"
-        type: "json"
-        success: (info)=>
-          @change_by_info(info,$up_btn,$down_btn,$vote_sum)
+      @to_vote("vote_up")
 
     @$elm.on "click", "a.vote-down", (evt)=>
-      @answer_id = jQuery(event.target).closest(".vote").data "answer-id"
-      $up_btn = jQuery(event.target).closest(".vote").find "a.vote-up"
-      $down_btn = jQuery(event.target).closest(".vote").find "a.vote-down"
-      $vote_sum = jQuery(event.target).closest(".vote").find ".vote-sum"
-      jQuery.ajax
-        method: "PUT"
-        url: "/questions/#{@question_id}/answers/#{@answer_id}/vote_down"
-        type: "json"
-        success: (info)=>
-          @change_by_info(info,$up_btn,$down_btn,$vote_sum)
+      @to_vote("vote_down")
+
+  to_vote: (vote_type)->
+    @answer_id = jQuery(event.target).closest(".vote").data "answer-id"
+    $up_btn = jQuery(event.target).closest(".vote").find "a.vote-up"
+    $down_btn = jQuery(event.target).closest(".vote").find "a.vote-down"
+    $vote_sum = jQuery(event.target).closest(".vote").find ".vote-sum"
+    jQuery.ajax
+      method: "PUT"
+      url: "/questions/#{@question_id}/answers/#{@answer_id}/"+ vote_type 
+      type: "json"
+      success: (info)=>
+        @change_by_info(info,$up_btn,$down_btn,$vote_sum)
 
   change_by_info: (info,$up_btn,$down_btn,$vote_sum)->
     if info.state == "up"

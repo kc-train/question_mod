@@ -14,16 +14,18 @@ class Answer
     jQuery(event.target).closest(".answer").find(".update-form textarea").animate({backgroundColor:"red"},200)
     jQuery(event.target).closest(".answer").find(".update-form textarea").animate({backgroundColor:"white"},200)
 
+  answer_update_form_toggleClass_hidden: ->
+    jQuery(event.target).closest(".answer").find(".edit").toggleClass "hidden"
+    jQuery(event.target).closest(".answer").find(".content").toggleClass "hidden"
+    jQuery(event.target).closest(".answer").find(".update-form").toggleClass "hidden"
+
+
   bind_event: =>
     @$answer.on "click", ".edit", =>
-      jQuery(event.target).toggleClass "hidden"
-      jQuery(event.target).closest(".answer").find(".content").toggleClass "hidden"
-      jQuery(event.target).closest(".answer").find(".update-form").toggleClass "hidden"
+      @answer_update_form_toggleClass_hidden()
 
     @$answer.on "click", ".update-form .update-cancel", =>
-      jQuery(event.target).closest(".answer").find(".edit").toggleClass "hidden"
-      jQuery(event.target).closest(".answer").find(".content").toggleClass "hidden"
-      jQuery(event.target).closest(".answer").find(".update-form").toggleClass "hidden"
+      @answer_update_form_toggleClass_hidden()
 
     @$answer.on "click", ".update-form .update-answer", =>
       @answer_id = jQuery(event.target).closest(".answer").find(".update-form").data("answer-id")

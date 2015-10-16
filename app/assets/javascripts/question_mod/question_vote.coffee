@@ -8,19 +8,17 @@ class QuestionVote
 
   bind_event: ->
     @$ele.on "click", "a.vote-up", (evt)=>
-      jQuery.ajax
-        method: "PUT"
-        url: "/questions/#{@question_id}/vote_up"
-        type: "json"
-        success: (info)=>
-          @change_by_info info
+      @to_vote("vote_up")
 
     @$ele.on "click", "a.vote-down", (evt)=>
-      jQuery.ajax
-        method: "PUT"
-        url: "/questions/#{@question_id}/vote_down"
-        success: (info)=>
-          @change_by_info info
+      @to_vote("vote_down")
+
+  to_vote: (vote_type)->
+    jQuery.ajax
+      method: "PUT"
+      url: "/questions/#{@question_id}/" + vote_type
+      success: (info)=>
+        @change_by_info info
 
   change_by_info: (info)->
     if info.state == "up"
