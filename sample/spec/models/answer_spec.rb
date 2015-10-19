@@ -9,23 +9,23 @@ RSpec.describe QuestionMod::Answer, type: :model do
     }
 
     it "回答字段完全通过校验" do
-      @answer1 = FactoryGirl.create(:answer, :creator => @user2, :question => @question1)
-      expect(@answer1).to be_valid
+      answer1 = FactoryGirl.create(:answer, :creator => @user2, :question => @question1)
+      expect(answer1).to be_valid
     end
 
     it "用户2对用户1创建的问题1创建回答" do
       expect{
-        @answer1 = FactoryGirl.create(:answer, :creator => @user2, :question => @question1)
+        @user2.answers.create(:content => "123", :question => @question1)
       }.to change{@question1.answers.count}.by(1)
     end
 
     it "用户1对用户1创建的问题1创建回答" do
-      @answer1 = FactoryGirl.create(:answer, :creator => @user1, :question => @question1)
+      answer1 = FactoryGirl.create(:answer, :creator => @user1, :question => @question1)
     end
 
     describe "测试用户2对回答1进行修改成功" do
       before{
-        @answer1 = FactoryGirl.create(:answer, :creator => @user2, :question => @question1)
+        @answer1 = @user2.answers.create(:content => "123", :question => @question1)
         @answer1.update(:content => "sb")
       }
       it "修改成功" do 
