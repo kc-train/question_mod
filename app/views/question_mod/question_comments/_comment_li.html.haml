@@ -1,0 +1,20 @@
+
+%li.comment{:data => {:"comment-id" => comment.id.to_s}}
+  .creator
+    - if comment.reply_comment.blank?
+      = comment.creator.name
+    - else
+      = comment.creator.name
+      回复
+      = comment.reply_comment.creator.name
+  .content= comment.content
+  .created-time= human_time_show comment.created_at
+
+  %a.reply{:href => "javascript:;"} 回复
+  - if comment.creator == current_user
+    %a.delete{:href => "javascript:;"} 删除
+
+  .comment-form.hidden{:data => {:"comment-id" => comment.id.to_s}}
+    %textarea.form-control
+    %a.add-comments.btn.btn-default{:href => "javascript:;"} 提交
+    %a.cancel.btn.btn-default{:href => "javascript:;"} 取消

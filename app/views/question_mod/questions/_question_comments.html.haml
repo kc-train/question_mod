@@ -1,0 +1,9 @@
+%a.show-comment{:href => "javascript:;"}= "#{question.comments.count} 条评论"
+.comment-content.hidden
+  %ul.comments
+    - question.comments.each do |comment|
+      = render :partial => "/question_mod/question_comments/comment_li", :locals => {:comment => comment}
+
+  .form{:data => {:"question-id" => question.id.to_s}}
+    %textarea.form-control
+    %a.add-comments.btn.btn-default{:href => "javascript:;"} 提交
