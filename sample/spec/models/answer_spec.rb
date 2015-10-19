@@ -19,6 +19,10 @@ RSpec.describe QuestionMod::Answer, type: :model do
       }.to change{@question1.answers.count}.by(1)
     end
 
+    it "用户1对用户1创建的问题1创建回答" do
+      @answer1 = FactoryGirl.create(:answer, :creator => @user1, :question => @question1)
+    end
+
     describe "测试用户2对回答1进行修改成功" do
       before{
         @answer1 = FactoryGirl.create(:answer, :creator => @user2, :question => @question1)
