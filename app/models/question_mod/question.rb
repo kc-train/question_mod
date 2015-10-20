@@ -2,7 +2,7 @@ module QuestionMod
   class Question
     include Mongoid::Document
     include Mongoid::Timestamps
-    include QuestionMod::QuestionVoteableMethod
+    include QuestionMod::VoteableMethod
 
     default_scope ->{ order(vote_sum: :desc) }
 
@@ -19,7 +19,7 @@ module QuestionMod
     validates :creator, :presence => true
     # creator 不能为空
     belongs_to :creator,         :class_name => 'User'
-    has_many   :votes,  :class_name => 'QuestionMod::QuestionVote'
+    has_many   :votes,  :class_name => 'QuestionMod::Vote'
     has_many   :comments, :class_name => 'QuestionMod::Comment', :as => :targetable
 
     has_many :answers, :class_name => 'QuestionMod::Answer', :order => :vote_sum.desc

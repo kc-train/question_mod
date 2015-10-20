@@ -2,7 +2,7 @@ module QuestionMod
   class Answer
     include Mongoid::Document
     include Mongoid::Timestamps
-    include QuestionMod::AnswerVoteableMethod
+    include QuestionMod::VoteableMethod
 
     # content 不能为空
     field :content, :type => String
@@ -22,7 +22,7 @@ module QuestionMod
 
     # question 不能为空
     belongs_to :question,       :class_name => 'QuestionMod::Question'
-    has_many   :votes,   :class_name => 'QuestionMod::AnswerVote'
+    has_many   :votes,   :class_name => 'QuestionMod::Vote'
     has_many   :comments,:class_name => 'QuestionMod::Comment', :as => :targetable
 
     def question_creator_can_not_create_answer
