@@ -6,8 +6,7 @@ module QuestionMod
 
     include Mongoid::Document
     include Mongoid::Timestamps
-    include QuestionMod::AnswerVoteSumMethod 
-    include QuestionMod::QuestionVoteSumMethod
+    include QuestionMod::VoteBelongsTo
 
     # up down 二选一
     enumerize :kind, in: [:up, :down]
