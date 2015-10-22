@@ -22,7 +22,7 @@ module QuestionMod
 
     # question 不能为空
     belongs_to :question,       :class_name => 'QuestionMod::Question'
-    has_many   :votes,   :class_name => 'QuestionMod::Vote'
+    has_many   :votes,   :class_name => 'QuestionMod::Vote', :as => :voteable
     has_many   :comments,:class_name => 'QuestionMod::Comment', :as => :targetable
 
     def question_creator_can_not_create_answer

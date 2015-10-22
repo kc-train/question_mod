@@ -19,7 +19,7 @@ module QuestionMod
     validates :creator, :presence => true
     # creator 不能为空
     belongs_to :creator,         :class_name => 'User'
-    has_many   :votes,  :class_name => 'QuestionMod::Vote'
+    has_many   :votes,  :class_name => 'QuestionMod::Vote', :as => :voteable
     has_many   :comments, :class_name => 'QuestionMod::Comment', :as => :targetable
 
     has_many :answers, :class_name => 'QuestionMod::Answer', :order => :vote_sum.desc
