@@ -12,6 +12,8 @@ module QuestionMod
     validates :question, :presence => true
     validate :question_creator_can_not_create_answer
 
+    after_create :answer_created
+
     # 统计 所有 AnswerVote 的值总和
     # up +1
     # down -1
@@ -30,5 +32,11 @@ module QuestionMod
         errors.add(:base,"用户不能给自己的 question 增加 answer") 
       end 
     end
+
+    private
+      def answer_created
+        user = self.question.creator
+        user.notifications.create(:kind => "question", :info => {:str1 => "您的问题", :question_title => self.question.title, :str2 => "收到一个新的回答"})  
+      end
   end
 end

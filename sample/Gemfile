@@ -41,6 +41,7 @@ gem 'haml'
 
 gem 'play_auth', :github => 'mindpin/play_auth',
                  :tag => :latest
+gem 'kc_notifications', :github => 'kc-train/kc_notifications'
 
 gem 'question_mod', path: '../'
 
