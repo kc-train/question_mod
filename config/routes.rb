@@ -1,5 +1,6 @@
 QuestionMod::Engine.routes.draw do
   root 'home#index'
+  resources :notifications
   resources :questions do
     member do
       put :vote_up

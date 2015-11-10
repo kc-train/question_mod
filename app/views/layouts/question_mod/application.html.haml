@@ -17,6 +17,9 @@
             %a.navbar-brand 
               已登录用户
               = current_user.name
+            %ul.nav.navbar-nav.navbar-right
+              %li
+                %a{:href => '/notifications', :data => {:method => :get}} 查看通知
         %ul.nav.navbar-nav.navbar-right
           %li
             %a{:href => '/questions', :data => {:method => :get}} 首页
