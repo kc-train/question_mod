@@ -1,0 +1,12 @@
+development:
+  sessions:
+    default:
+      database: question_mod_dev
+      hosts:
+        - localhost:27017
+test:
+  sessions:
+    default:
+      database: question_mod_test
+      hosts:
+        - localhost:27017

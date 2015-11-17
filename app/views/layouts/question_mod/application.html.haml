@@ -1,0 +1,29 @@
+!!!
+%html{:lang => :zh}
+  %head
+    %meta{:'http-equiv' => 'Content-Type', :content => 'text/html; charset=utf-8'}
+    %meta{:name => 'viewport', :content => 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'}
+
+    %title rails engine: question_mod
+    = csrf_meta_tags
+    = stylesheet_link_tag 'question_mod/application', :media => 'screen'
+    = javascript_include_tag 'question_mod/application'
+
+  %body
+    %nav.navbar.navbar-inverse
+      .container
+        .navbar-header
+          - if current_user != nil
+            %a.navbar-brand 
+              已登录用户
+              = current_user.name
+            %ul.nav.navbar-nav.navbar-right
+              %li
+                %a{:href => '/notifications', :data => {:method => :get}} 查看通知
+        %ul.nav.navbar-nav.navbar-right
+          %li
+            %a{:href => '/questions', :data => {:method => :get}} 首页
+          %li
+            %a{:href => '/auth/logout', :data => {:method => :delete}} 登出
+    .container
+      = yield

@@ -1,3 +1,19 @@
+<<<<<<< HEAD
+/.bundle/
+/.yardoc
+/Gemfile.lock
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+*.bundle
+*.so
+*.o
+*.a
+mkmf.log
+=======
 *.rbc
 capybara-*.html
 .rspec
@@ -33,3 +49,4 @@ bower.json
 
 # Ignore pow environment settings
 .powenv
+>>>>>>> 8497499dfb7c81cac22f559730398c52d7b43896

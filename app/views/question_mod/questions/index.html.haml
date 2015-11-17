@@ -1,0 +1,16 @@
+.col-md-8
+  .page-questions-index
+    = link_to '提问', "questions/new", :method => :get, :class => "btn btn-default add-question"
+    %ul.questions
+      - @questions.each do |question|
+        %li.question
+          .vote
+            .count= question.vote_sum
+            .text 投票
+          .answer
+            .count= question.answers.count
+            .text 回答
+          .content
+            .creator= question.creator.name
+            .created-time= human_time_show question.created_at
+            %a.title{:href => "/questions/#{question.id}"}= question.title
