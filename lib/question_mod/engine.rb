@@ -4,6 +4,10 @@ module QuestionMod
     config.to_prepare do
       ApplicationController.helper ::ApplicationHelper
 
+      Dir.glob(Rails.root + "app/decorators/question_mod/**/*_decorator.rb").each do |c|
+        require_dependency(c)
+      end
+
       User.class_eval do
         has_many :questions, class_name: 'QuestionMod::Question'
         has_many :answers, class_name: 'QuestionMod::Answer'
