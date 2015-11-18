@@ -35,6 +35,8 @@ module QuestionMod
 
     private
       def answer_created
+        self.question.answered = true
+        self.question.save
         user = self.question.creator
         user.notifications.create(:kind => "question", :info => {:str1 => "您的问题", :question_title => self.question.title, :str2 => "收到一个新的回答", :question_id => self.question.id})  
       end

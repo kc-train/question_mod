@@ -13,7 +13,22 @@ module QuestionMod
         has_many :answers, class_name: 'QuestionMod::Answer'
         has_many :comments, class_name: 'QuestionMod::Comment'
         has_many :votes, class_name: 'QuestionMod::Vote'
-      end
+
+        def created_questions 
+          QuestionMod::Question.where(:creator_id => self.id.to_s)
+        end
+
+        def answered_questions
+          arr = []
+
+          self.answers.map do |answer| 
+            arr << answer.question
+          end.compact.uniq
+
+          return arr
+        end
+
+      end      
     end
   end
 end
