@@ -24,7 +24,7 @@ RSpec.describe QuestionMod::Answer, type: :model do
     end
 
     it "用户1对用户1创建的问题1创建回答" do
-      answer1 = @user1.answers.create(:content => "123", :question => @question1)
+      answer1 = FactoryGirl.create(:answer, :creator => @user1, :question => @question1)
     end
 
     describe "测试用户2对回答1进行修改成功" do
