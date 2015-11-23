@@ -36,8 +36,7 @@ module QuestionMod
     private
       def answer_created
         if self.question.answered == false
-          self.question.answered = true
-          self.question.save
+          self.question.update(:answered => true)
         end
         
         user = self.question.creator
