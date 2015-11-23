@@ -12,7 +12,7 @@ module QuestionMod
       @question = QuestionMod::Question.new(question_params)
       @question.creator = current_user
       if @question.save
-        redirect_to "/questions"
+        redirect_to questions_path
       else
         render :new
       end

@@ -1,6 +1,6 @@
 .col-md-8
   .page-questions-index
-    = link_to '提问', "questions/new", :method => :get, :class => "btn btn-default add-question"
+    = link_to '提问', new_question_path, :method => :get, :class => "btn btn-default add-question"
     %ul.questions
       - @questions.each do |question|
         %li.question
@@ -13,4 +13,4 @@
           .content
             .creator= question.creator.name
             .created-time= human_time_show question.created_at
-            %a.title{:href => "/questions/#{question.id}"}= question.title
+            %a.title{:href => question_path(question.id)}= question.title

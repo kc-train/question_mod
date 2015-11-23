@@ -13,10 +13,14 @@ RSpec.describe QuestionMod::Answer, type: :model do
       expect(answer1).to be_valid
     end
 
-    it "用户2对用户1创建的问题1创建回答" do
-      expect{
+    describe "用户2对用户1创建的问题1创建回答" do
+      before{
         @user2.answers.create(:content => "123", :question => @question1)
-      }.to change{@question1.answers.count}.by(1)
+      }
+
+      it{
+        expect(@question1.answered).to eq(true)
+      }
     end
 
     it "用户1对用户1创建的问题1创建回答" do

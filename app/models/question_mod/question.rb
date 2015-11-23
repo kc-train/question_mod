@@ -5,10 +5,13 @@ module QuestionMod
     include QuestionMod::VoteableMethod
 
     default_scope ->{ order(vote_sum: :desc) }
+    scope :answered, -> { where(:answered => true)}
+    scope :unanswered, -> { where(:answered => false)}
 
     # title content 不能为空
     field :title,   :type => String
     field :content, :type => String
+    field :answered, :type => Boolean, :default => false
     # 统计 所有 QuestionVote 的值总和
     # up +1
     # down -1
