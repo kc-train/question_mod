@@ -45,22 +45,11 @@ RSpec.describe User, type: :model do
       @question7.vote_down_by(@user1)
       @question9.vote_down_by(@user1)
       @question9.vote_down_by(@user2)
-      answered_questions = QuestionMod::Question.answered
-      arr = answered_questions.map do |answered_question|
-        answered_question
-      end
-      expect(arr).to eq([@question1, @question2, @question5, @question8, @question10])
-      unanswered_questions = QuestionMod::Question.unanswered
-      arr1 = unanswered_questions.map do |unanswered_question|
-        unanswered_question
-      end
-      expect(arr1).to eq([@question3, @question4, @question6, @question7, @question9])
+
+      expect(QuestionMod::Question.answered).to eq([@question1, @question2, @question5, @question8, @question10])
+      expect(QuestionMod::Question.unanswered).to eq([@question3, @question4, @question6, @question7, @question9])
       expect(@user1.answered_questions).to eq([@question5,@question8])
-      user3_questions = @user3.created_questions
-      arr2 = user3_questions.map do |user3_question|
-        user3_question
-      end
-      expect(arr2).to eq([@question8, @question9])
+      expect(@user3.created_questions).to eq([@question8, @question9])
     }
   end
 end

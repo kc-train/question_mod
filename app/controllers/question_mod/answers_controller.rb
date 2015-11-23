@@ -14,7 +14,7 @@ module QuestionMod
       @answer = @question.answers.create(answer_params)
       @answer.creator = current_user
       if @answer.save
-        redirect_to "/questions/#{@question.id}"
+        redirect_to question_path(@question.id)
       else
         render :new
       end
