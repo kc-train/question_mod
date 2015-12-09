@@ -48,8 +48,14 @@ RSpec.describe User, type: :model do
 
       expect(QuestionMod::Question.answered).to eq([@question1, @question2, @question5, @question8, @question10])
       expect(QuestionMod::Question.unanswered).to eq([@question3, @question4, @question6, @question7, @question9])
-      expect(@user1.answered_questions).to eq([@question5,@question8])
-      expect(@user3.created_questions).to eq([@question8, @question9])
+      expect(@user1.answered_questions.class.name).to eq('Mongoid::Criteria')
+      expect(@user1.answered_questions.first).to eq(@question5)
+      expect(@user1.answered_questions.last).to eq(@question8)
+      expect(@user1.answered_questions.count).to eq(2)
+      expect(@user3.created_questions.class.name).to eq('Mongoid::Relations::Targets::Enumerable')
+      expect(@user3.created_questions.first).to eq(@question8)
+      expect(@user3.created_questions.last).to eq(@question9)
+      expect(@user3.created_questions.count).to eq(2)
     }
   end
 end
