@@ -60,6 +60,37 @@
               = render :partial => "answer_comments", :locals => {:answer => answer}
 
 
+              .answer-vote{data: {rel: "answer-vote", id: answer.id.to_s}}
+                - if answer.creator == current_user
+                  .helpful-voted
+                    有帮助(
+                    .count= answer.votes.where(:kind => "up").count
+                    )
+                -else
+                  - if answer.vote_state_of(current_user) == "up"
+                    .voted
+                      %button.btn.btn-default 有帮助
+                      (
+                      .count= answer.votes.where(:kind => "up").count
+                      )
+                    .unvoted.hidden
+                      %button.btn.btn-info 有帮助
+                      (
+                      .count= answer.votes.where(:kind => "up").count
+                      )
+                  -else
+                    .voted.hidden
+                      %button.btn.btn-default 有帮助
+                      (
+                      .count= answer.votes.where(:kind => "up").count
+                      )
+                    .unvoted
+                      %button.btn.btn-info 有帮助
+                      (
+                      .count= answer.votes.where(:kind => "up").count
+                      )
+
+
       - if @question.creator != current_user && @question.answers.where(:creator_id => current_user.id).count == 0
         = simple_form_for [@question,QuestionMod::Answer.new] do |f|
           = f.input 'content', as: :text, input_html: { class: 'form-control' }

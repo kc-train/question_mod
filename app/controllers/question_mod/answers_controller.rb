@@ -36,7 +36,8 @@ module QuestionMod
       @answer.reload
       render :json => {
         :state    => @answer.vote_state_of(current_user),
-        :vote_sum => @answer.vote_sum
+        :vote_sum => @answer.vote_sum,
+        :up_sum => @answer.votes.where(:kind => "up").count
       }
     end
 
@@ -46,7 +47,8 @@ module QuestionMod
       @answer.reload
       render :json => {
         :state    => @answer.vote_state_of(current_user),
-        :vote_sum => @answer.vote_sum
+        :vote_sum => @answer.vote_sum,
+        :up_sum => @answer.votes.where(:kind => "up").count
       }
     end
 
