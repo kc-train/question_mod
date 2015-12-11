@@ -15,11 +15,12 @@ module QuestionMod
         has_many :votes, class_name: 'QuestionMod::Vote'
 
         def answered_questions
-          self.answers.map do |answer|
-            answer.question
+          question_ids = self.answers.map do |answer|
+            answer.question.id 
           end.compact.uniq
-        end
 
+          QuestionMod::Question.where(:_id.in => question_ids)
+        end
       end
     end
   end
