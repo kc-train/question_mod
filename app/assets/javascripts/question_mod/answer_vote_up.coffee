@@ -44,7 +44,7 @@ class @AnswerVoteUp
     
   
   change_by_info2: (info,$unvoted,$voted,$up_sum,up_sum_before_vote)->
-    if info.up_sum - up_sum_before_vote != 0
+    if info.up_sum != up_sum_before_vote
       $unvoted.toggleClass "hidden"
       $voted.toggleClass "hidden"
 
