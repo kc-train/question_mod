@@ -60,7 +60,7 @@
               = render :partial => "answer_comments", :locals => {:answer => answer}
 
 
-              .answer-vote{data: {rel: "answer-vote", id: answer.id.to_s}}
+              .answer-vote-up{data: {rel: "answer-vote-up", id: answer.id.to_s}}
                 - if answer.creator == current_user
                   .helpful-voted
                     有帮助(
