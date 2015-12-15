@@ -173,8 +173,16 @@
           min-height: 70px;
         }
 
-
-
+        .desc-action{
+          .answer-vote-up{
+            margin-left: 10px;
+            padding: 0 0 10px 10px;
+            float: right;
+            .count{
+              display: inline;
+            }
+          }
+        }
       }
 
     }
