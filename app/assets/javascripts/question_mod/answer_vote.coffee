@@ -17,8 +17,8 @@ class AnswerVote
     $unvoted = jQuery(event.target).closest(".answer").find ".unvoted"
     $voted = jQuery(event.target).closest(".answer").find ".voted"
     $vote_sum = jQuery(event.target).closest(".vote").find ".vote-sum"
-    $up_sum = jQuery(event.target).closest(".answer").find ".answer-vote .count"
-    up_sum_before_vote = jQuery(event.target).closest(".answer").find(".answer-vote .voted .count").text()
+    $up_sum = jQuery(event.target).closest(".answer").find ".answer-vote-up .count"
+    up_sum_before_vote = jQuery(event.target).closest(".answer").find(".answer-vote-up .voted .count").text()
     jQuery.ajax
       method: "PUT"
       url: "/questions/#{@question_id}/answers/#{@answer_id}/"+ vote_type 
@@ -26,6 +26,7 @@ class AnswerVote
       success: (info)=>
         @change_by_info1(info,$up_btn,$down_btn,$vote_sum)
         @change_by_info2(info,$unvoted,$voted,$up_sum,up_sum_before_vote)
+
 
   change_by_info1: (info,$up_btn,$down_btn,$vote_sum)-> 
     if info.state == "up"
